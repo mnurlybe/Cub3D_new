@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/18 17:49:18 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/04/24 19:01:29 by julienmoign      ###   ########.fr       */
+/*   Created: 2024/04/28 16:08:39 by mnurlybe          #+#    #+#             */
+/*   Updated: 2024/04/28 16:26:16 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ int    ft_cub3d(void)
     mlx_delete_image(cub3d->mlx, cub3d->img);
 	mlx_close_window(cub3d->mlx);
 	mlx_terminate(cub3d->mlx);
-	free(cub3d);
-    
+	free_program(cub3d);
     return (0);
 }
 

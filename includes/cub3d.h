@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/18 17:52:16 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/04/24 19:01:45 by julienmoign      ###   ########.fr       */
+/*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
+/*   Updated: 2024/04/28 16:15:00 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,8 @@ void handle_movement(void *ptr);
 
 // keys.c
 void handle_keys(void *ptr);
+
+// free.c
+void free_program(t_cub3d *cub3d);
 
 #endif
