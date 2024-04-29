@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libs.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:54:38 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/04/18 18:11:19 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/04/29 18:03:06 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@
 # include <stdlib.h>
 # include "libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
+#include <fcntl.h>
 
 #endif

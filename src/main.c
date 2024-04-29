@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:39 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/04/28 16:26:16 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/04/29 18:14:14 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,14 @@ int main(int argc, char **argv)
 {
     (void) argv;
     (void) argc;
-    // if (argc == 2)
-    ft_cub3d();
-    // else
-    //     write(1, "Error\n", 6);
+    t_file *game;
+    if (argc == 2)
+    {
+        game = parse_file(argv[1]);
+        // ft_cub3d();
+    }
+    else
+        write(1, "Error\n", 6); // add proper error message
+    (void) game;
     return (0);
 }

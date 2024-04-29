@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/04/28 16:15:00 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:26:36 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # define PLAYER_SPEED 5
 # define PLAYER_ROT_SPEED 0.157
 # define PLAYER_SIZE 10
-# define MINIMAP_SCALE 1.0
 # define MINIMAP_SIZE 512
+# define MINIMAP_SCALE 1.0
 # define TILE_SIZE 64
 // to calculate the cos and sin will be used the M_PI constant
 # define M_PI 3.14159265358979323846
@@ -57,6 +57,27 @@ typedef struct s_cub3d
 	t_minimap	*minimap;
 }				t_cub3d;
 
+typedef struct s_map
+{
+	int		width;
+	int		height;
+	char	**map;
+}				t_map;
+
+typedef struct s_file
+{
+	int fd;
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	int		floor;
+	int		ceiling;
+	char 	**split_file;
+	size_t 	file_size;
+	t_map	*map;
+}				t_file;
+
 
 // draw_minimap.c
 void draw_minimap(void *ptr);
@@ -72,5 +93,8 @@ void handle_keys(void *ptr);
 
 // free.c
 void free_program(t_cub3d *cub3d);
+
+// parse_file.c
+t_file *parse_file(char *file);
 
 #endif
