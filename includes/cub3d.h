@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/04/29 19:26:36 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/01 18:00:55 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,12 @@
 # define PLAYER_SPEED 5
 # define PLAYER_ROT_SPEED 0.157
 # define PLAYER_SIZE 10
-# define MINIMAP_SIZE 512
+# define MINIMAP_SIZE 6 // size in tiles
 # define MINIMAP_SCALE 1.0
 # define TILE_SIZE 64
-// to calculate the cos and sin will be used the M_PI constant
+# define MINIMAP_TILE_SIZE 32
 # define M_PI 3.14159265358979323846
 # define M_PI_2 1.57079632679489661923
-
-// create an array of 1 and 0 to represent the map
 
 // player struct: that will have a player position, direction and field of view
 typedef struct s_player
@@ -41,10 +39,29 @@ typedef struct s_player
 // minimap struct
 typedef struct s_minimap
 {
-	size_t	width;
-	size_t	height;
 	int 	**map;
+	size_t	w_tiles;
+	size_t	h_tiles;
+	size_t  w_pixels;
+	size_t  h_pixels;
 }				t_minimap;
+
+// file struct
+typedef struct s_file
+{
+	int 	fd;
+	size_t 	file_size;
+	char 	**split_file;
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	int		floor;
+	int		ceiling;
+	char	**map;
+	size_t  map_h_tiles;
+	size_t  map_w_tiles;
+}				t_file;
 
 // mlx struct window, image and their dimenstions
 typedef struct s_cub3d
@@ -57,33 +74,11 @@ typedef struct s_cub3d
 	t_minimap	*minimap;
 }				t_cub3d;
 
-typedef struct s_map
-{
-	int		width;
-	int		height;
-	char	**map;
-}				t_map;
-
-typedef struct s_file
-{
-	int fd;
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
-	int		floor;
-	int		ceiling;
-	char 	**split_file;
-	size_t 	file_size;
-	t_map	*map;
-}				t_file;
-
-
 // draw_minimap.c
-void draw_minimap(void *ptr);
+void draw_map(void *ptr);
 
 // init.c
-void init(t_cub3d *cub3d);
+void init(t_cub3d *cub3d, t_file *game_data);
 
 // movement.c
 void handle_movement(void *ptr);
@@ -93,8 +88,13 @@ void handle_keys(void *ptr);
 
 // free.c
 void free_program(t_cub3d *cub3d);
+void free_game(t_file *game);
 
 // parse_file.c
 t_file *parse_file(char *file);
+
+// map_utils.c
+void get_map(t_file *game);
+void    copy_map(t_file *game_data, t_minimap *minimap);
 
 #endif

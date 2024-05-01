@@ -8,7 +8,7 @@ int    is_newline(char c)
 }
 
 /*
- * Prase file and store each line in a char **split_file
+ * Parse file and store each line in a char **split_file
  * At this point no checks/error management are done on the file content
 */
 t_file *parse_file(char *file)
@@ -29,21 +29,27 @@ t_file *parse_file(char *file)
     }
     line = get_next_line(info->fd);
     temp = ft_strdup(line);
-    i = 0;
+    i = 1;
     while (line)
     {
+        free(line);
+        line = get_next_line(info->fd);
+        if (!line)
+        {
+            free(line);
+            break;
+        }
         if (is_newline(line[0]))
             temp = ft_strjoin(temp, " \n");
         else
             temp = ft_strjoin(temp, line);
-        free(line);
-        line = get_next_line(info->fd);
         i++;
     }
     info->split_file = ft_split(temp, '\n');
     info->file_size = i;
     close(info->fd);
     free(temp);
-    free(line);
+    // copy full map from split_file to map
+    get_map(info);
     return (info);
 }

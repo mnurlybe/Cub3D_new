@@ -23,6 +23,10 @@ void rotation(t_cub3d *cub3d)
     }
 }
 
+/**
+ * This function only moves the player inside the minimap.
+ * Not sure yet how to move the player in the main window.
+*/
 void move_player(t_cub3d *cub3d)
 {
     double new_x;
@@ -34,7 +38,7 @@ void move_player(t_cub3d *cub3d)
     {
         new_x = cub3d->P->mini_x + PLAYER_SPEED * cos(cub3d->P->dir);
         new_y = cub3d->P->mini_y + PLAYER_SPEED * sin(cub3d->P->dir);
-        if (cub3d->minimap->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+        if (cub3d->minimap->map[(int)(new_y / MINIMAP_TILE_SIZE)][(int)(new_x / MINIMAP_TILE_SIZE)] == 0)
         {
             cub3d->P->mini_x = new_x;
             cub3d->P->mini_y = new_y;
@@ -44,7 +48,7 @@ void move_player(t_cub3d *cub3d)
     {
         new_x = cub3d->P->mini_x - PLAYER_SPEED * cos(cub3d->P->dir);
         new_y = cub3d->P->mini_y - PLAYER_SPEED * sin(cub3d->P->dir);
-        if (cub3d->minimap->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+        if (cub3d->minimap->map[(int)(new_y / MINIMAP_TILE_SIZE)][(int)(new_x / MINIMAP_TILE_SIZE)] == 0)
         {
             cub3d->P->mini_x = new_x;
             cub3d->P->mini_y = new_y;
@@ -54,7 +58,7 @@ void move_player(t_cub3d *cub3d)
     {
         new_x = cub3d->P->mini_x - PLAYER_SPEED * cos(cub3d->P->dir + M_PI_2);
         new_y = cub3d->P->mini_y - PLAYER_SPEED * sin(cub3d->P->dir + M_PI_2);
-        if (cub3d->minimap->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+        if (cub3d->minimap->map[(int)(new_y / MINIMAP_TILE_SIZE)][(int)(new_x / MINIMAP_TILE_SIZE)] == 0)
         {
             cub3d->P->mini_x = new_x;
             cub3d->P->mini_y = new_y;
@@ -64,7 +68,7 @@ void move_player(t_cub3d *cub3d)
     {
         new_x = cub3d->P->mini_x + PLAYER_SPEED * cos(cub3d->P->dir + M_PI_2);
         new_y = cub3d->P->mini_y + PLAYER_SPEED * sin(cub3d->P->dir + M_PI_2);
-        if (cub3d->minimap->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+        if (cub3d->minimap->map[(int)(new_y / MINIMAP_TILE_SIZE)][(int)(new_x / MINIMAP_TILE_SIZE)] == 0)
         {
             cub3d->P->mini_x = new_x;
             cub3d->P->mini_y = new_y;
