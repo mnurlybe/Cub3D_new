@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:52:16 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/04/24 19:01:45 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/01 09:58:58 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ typedef struct s_cub3d
 
 // draw_minimap.c
 void draw_minimap(void *ptr);
+
+//cast field of view
+void fov_cast(void *ptr);
 
 // init.c
 void init(t_cub3d *cub3d);

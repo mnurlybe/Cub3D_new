@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:49:18 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/04/24 19:01:29 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/01 09:58:25 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int    ft_cub3d(void)
     mlx_loop_hook(cub3d->mlx, draw_minimap, cub3d);
     mlx_loop_hook(cub3d->mlx, handle_movement, cub3d);
     mlx_loop_hook(cub3d->mlx, handle_keys, cub3d);
+	mlx_loop_hook(cub3d->mlx, fov_cast, cub3d);
     mlx_loop(cub3d->mlx);
     mlx_delete_image(cub3d->mlx, cub3d->img);
 	mlx_close_window(cub3d->mlx);

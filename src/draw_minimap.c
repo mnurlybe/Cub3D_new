@@ -10,39 +10,29 @@
 
 void draw_map(t_cub3d *cub3d)
 {
-    for (size_t y = 0; y < 8; y++)
-    {
-        for (size_t x = 0; x < 8; x++)
-        {
-            if (cub3d->minimap->map[y][x] == 1)
-            {
-                for (size_t i = 0; i < TILE_SIZE * MINIMAP_SCALE; i++)
-                {
-                    for (size_t j = 0; j < TILE_SIZE * MINIMAP_SCALE; j++)
-                    {
-                        mlx_put_pixel(cub3d->img, x * TILE_SIZE * MINIMAP_SCALE + i, y * TILE_SIZE * MINIMAP_SCALE + j, 0x008000FF); //green
-                    }
-                }
-            }
-            else
-            {
-                for (size_t i = 0; i < TILE_SIZE * MINIMAP_SCALE; i++)
-                {
-                    for (size_t j = 0; j < TILE_SIZE * MINIMAP_SCALE; j++)
-                    {
-                        mlx_put_pixel(cub3d->img, x * TILE_SIZE * MINIMAP_SCALE + i, y * TILE_SIZE * MINIMAP_SCALE + j, 0xFFFFFFFF); //white
-                    }
-                }
-            }
-        }
-    }
+	for (size_t y = 0; y < cub3d->minimap->height; y++)
+	{
+		for (size_t x = 0; x < cub3d->minimap->width; x++)
+		{
+			if (cub3d->minimap->map[(int) y / TILE_SIZE][(int) x / TILE_SIZE] > 0)
+			{
+				mlx_put_pixel(cub3d->img, x, y, 0x008000FF);
+			}
+			else
+				mlx_put_pixel(cub3d->img, x, y, 0xFFFFFFFF);
+			if (x % TILE_SIZE == 0 || y % TILE_SIZE == 0 || x == cub3d->minimap->width - 1 || y == cub3d->minimap->height - 1)
+			{
+				mlx_put_pixel(cub3d->img, x, y, 0xFFAEAEAE);
+			}
+		}
+	}
 }
 
 void draw_player(t_cub3d *cub3d)
 {
-    for (size_t i = 0; i < PLAYER_SIZE; i++)
+    for (int i = - PLAYER_SIZE / 2; i < PLAYER_SIZE / 2; i++)
     {
-        for (size_t j = 0; j < PLAYER_SIZE; j++)
+        for (int j = - PLAYER_SIZE / 2; j < PLAYER_SIZE / 2; j++)
         {
             mlx_put_pixel(cub3d->img, cub3d->P->mini_x + i, cub3d->P->mini_y + j, 0xFF0000FF); //red
         }
@@ -59,11 +49,11 @@ void draw_line(mlx_image_t *img, double x1, double y1, double x2, double y2, int
     double yinc = dy / steps;
     double x = x1;
     double y = y1;
-    for (size_t i = 0; i < steps; i++)
+    for (int i = -1; i < steps; i++)
     {
-        for (size_t j = 0; j < 3; j++)
+        for (int j = -1; j < 2; j++)
         {
-            for (size_t k = 0; k < 3; k++)
+            for (int k = -1; k < 2; k++)
             {
                 mlx_put_pixel(img, x + j, y + k, color);
             }
@@ -75,16 +65,15 @@ void draw_line(mlx_image_t *img, double x1, double y1, double x2, double y2, int
 
 void draw_player_direction(t_cub3d *cub3d)
 {
-    double x = cub3d->P->mini_x + PLAYER_SIZE / 2;
-    double y = cub3d->P->mini_y + PLAYER_SIZE / 2;
-    double x2 = x + cos(cub3d->P->dir) * PLAYER_SIZE;
-    double y2 = y + sin(cub3d->P->dir) * PLAYER_SIZE;
+    double x = cub3d->P->mini_x;
+    double y = cub3d->P->mini_y;
+    double x2 = x + cos(cub3d->P->dir) * (PLAYER_SIZE + 5);
+    double y2 = y + sin(cub3d->P->dir) * (PLAYER_SIZE + 5);
     draw_line(cub3d->img, x, y, x2, y2, 0xFF0000FF); //black
 }
 
 void draw_minimap(void *ptr)
 {
-
     t_cub3d *cub3d = (t_cub3d *)ptr;
 
     // draw the map
