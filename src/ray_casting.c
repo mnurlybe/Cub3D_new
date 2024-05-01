@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 11:52:40 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/01 15:21:07 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/01 17:00:01 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,17 @@ void	raycast(t_cub3d *cub3d, double dir)
 	
 	float	delta_dist_x;
 	float	delta_dist_y;
-	delta_dist_x = sqrt(1 + (dir_y * dir_y) / (dir_x * dir_x)) * TILE_SIZE;
-	delta_dist_y = sqrt(1 + (dir_x * dir_x) / (dir_y * dir_y)) * TILE_SIZE;
+	delta_dist_x = fabs(1 / dir_x) * TILE_SIZE;
+	delta_dist_y = fabs(1 / dir_y) * TILE_SIZE;
 	//printf("delta: ( %f| %f)\n\n", delta_dist_x, delta_dist_y);
 	if (dir_x < 0)
-		side_dist_x = ((map_x + 1) * TILE_SIZE - cub3d->P->mini_x) / dir_x; //fabs(dir_x);
+		side_dist_x = ((map_x + 1) * TILE_SIZE - cub3d->P->mini_x) / fabs( 1 / dir_x); //fabs(dir_x);
 	else
-		side_dist_x = (cub3d->P->mini_x - map_x * TILE_SIZE) / dir_x; //fabs(dir_x);
+		side_dist_x = (cub3d->P->mini_x - map_x * TILE_SIZE) / fabs( 1 / dir_x); //fabs(dir_x);
 	if (dir_y < 0)
-		side_dist_y = ((map_y + 1) * TILE_SIZE - cub3d->P->mini_y) / dir_y; //fabs(dir_y);
+		side_dist_y = ((map_y + 1) * TILE_SIZE - cub3d->P->mini_y) / fabs( 1 / dir_y); //fabs(dir_y);
 	else
-		side_dist_y = (cub3d->P->mini_y - map_y * TILE_SIZE) / dir_y;//fabs(dir_y);
+		side_dist_y = (cub3d->P->mini_y - map_y * TILE_SIZE) / fabs( 1 / dir_y);//fabs(dir_y);
 	//printf("------------------------------------------------------------------------\n");
 	//printf("Track iterations:\n");
 	//int i = 0;
@@ -100,14 +100,8 @@ void	raycast(t_cub3d *cub3d, double dir)
 	//printf("------------------------------------------------------------------------\n");
 	double end_x = cub3d->P->mini_x + (double) (distance * dir_x);
 	double end_y = cub3d->P->mini_y + (double) (distance * dir_y);
-	if (end_x < 0)
-		end_x = 0;
-	if (end_x > cub3d->minimap->width)
-		end_x = cub3d->minimap->width;
-	if (end_y < 0)
-		end_y = 0;
-	if (end_y > cub3d->minimap->height)
-		end_y = cub3d->minimap->height;
+	end_x = fmax(0, fmin(end_x, cub3d->minimap->width));
+	end_y = fmax(0, fmin(end_y, cub3d->minimap->height));
 	//printf("1: (%lf | %lf) and 2: (%lf | %lf)\n\n\n", cub3d->P->mini_x, cub3d->P->mini_y, end_x, end_y);
 	draw_line2(cub3d->img, cub3d->P->mini_x, cub3d->P->mini_y, end_x, end_y, 0x00FF0000);
 }
