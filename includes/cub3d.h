@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/02 17:33:50 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/02 20:09:59 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,20 @@
 // define constants
 # define FOV 60
 # define PLAYER_SPEED 5
-# define PLAYER_ROT_SPEED 0.5
-# define PLAYER_SIZE 10
-# define MINIMAP_SIZE 6 // size in tiles
+# define PLAYER_ROT_SPEED 0.157
+# define PLAYER_SIZE 6
+# define MINIMAP_VS 320 // visibility scale in pixels, then visibility radius is MINIMAP_VS/2
 # define MINIMAP_SCALE 1.0
 # define TILE_SIZE 64
-# define MINIMAP_TILE_SIZE 32
+# define MINIMAP_TILE_SIZE 16
 # define M_PI 3.14159265358979323846
 # define M_PI_2 1.57079632679489661923
 
 // player struct: that will have a player position, direction and field of view
 typedef struct s_player
 {
-	double	mini_x;
-	double	mini_y;
+	double	mini_x; // in pixels
+	double	mini_y; // in pixels
 	double	dir;
 	double	fov;
 }				t_player;
@@ -76,6 +76,7 @@ typedef struct s_cub3d
 
 // draw_minimap.c
 void draw_map(void *ptr);
+void draw_player(t_cub3d *cub3d);
 
 // init.c
 void init(t_cub3d *cub3d, t_file *game_data);
@@ -96,5 +97,11 @@ t_file *parse_file(char *file);
 // map_utils.c
 void get_map(t_file *game);
 void    copy_map(t_file *game_data, t_minimap *minimap);
+
+// player_utils.c
+char set_player_position(t_file *game_data, t_cub3d *cub3d);
+
+// draw_minimap_vis.c
+// void draw_minimap_visibile(t_cub3d *cub3d);
 
 #endif

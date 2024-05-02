@@ -116,6 +116,7 @@ void draw_map(void *ptr)
     t_cub3d *cub3d = (t_cub3d *)ptr;
     // draw the map
     draw_minimap(cub3d);
+    // draw_minimap_visibile(cub3d);
     // draw the player
     draw_player(cub3d);
     // draw the player direction

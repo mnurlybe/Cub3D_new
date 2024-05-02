@@ -1,9 +1,18 @@
 #include "../includes/cub3d.h"
 
-void init_player(t_cub3d *cub3d)
+void init_player(t_file *game_data, t_cub3d *cub3d)
 {
-    cub3d->P->mini_x = MINIMAP_SIZE / 2 * MINIMAP_TILE_SIZE;
-    cub3d->P->mini_y = MINIMAP_SIZE / 2 * MINIMAP_TILE_SIZE;
+    char direction;
+    direction = set_player_position(game_data, cub3d);
+    if (direction == 'N')
+        cub3d->P->dir = 1.5 * M_PI;
+    else if (direction == 'S')
+        cub3d->P->dir = 0.5 * M_PI;
+    else if (direction == 'E')
+        cub3d->P->dir = 0;
+    else if (direction == 'W')
+        cub3d->P->dir = M_PI;
+    
     cub3d->P->dir = M_PI;
     cub3d->P->fov = FOV;
 }
@@ -32,7 +41,7 @@ void init(t_cub3d *cub3d, t_file *game_data)
     cub3d->P = malloc(sizeof(t_player));
     if (!cub3d->P)
         return ; // add proper error message
-    init_player(cub3d);
+    init_player(game_data, cub3d);
     cub3d->minimap = malloc(sizeof(t_minimap));
     if (!cub3d->minimap)
         return ; // add proper error message
