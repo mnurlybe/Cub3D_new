@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:31 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/01 16:26:17 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/02 17:34:28 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,14 @@
 
 void free_program(t_cub3d *cub3d)
 {
+    size_t i;
     free(cub3d->P);
-    for (size_t i = 0; i < 8; i++)
+    i = 0;
+    while (i < cub3d->minimap->h_tiles)
+    {
         free(cub3d->minimap->map[i]);
+        i++;
+    }
     free(cub3d->minimap->map);
     free(cub3d->minimap);
     free(cub3d);
@@ -24,11 +29,20 @@ void free_program(t_cub3d *cub3d)
 
 void free_game(t_file *game)
 {
-    for (size_t i = 0; i < game->file_size; i++)
+    int i;
+    i = 0;
+    while(game->split_file[i])
+    {
         free(game->split_file[i]);
+        i++;
+    }
     free(game->split_file);
-    for (size_t i = 0; game->map[i]; i++)
+    i = 0;
+    while(game->map[i])
+    {
         free(game->map[i]);
+        i++;
+    }
     free(game->map);
     free(game);
 }

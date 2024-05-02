@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/01 18:00:55 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/02 17:33:50 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // define constants
 # define FOV 60
 # define PLAYER_SPEED 5
-# define PLAYER_ROT_SPEED 0.157
+# define PLAYER_ROT_SPEED 0.5
 # define PLAYER_SIZE 10
 # define MINIMAP_SIZE 6 // size in tiles
 # define MINIMAP_SCALE 1.0
