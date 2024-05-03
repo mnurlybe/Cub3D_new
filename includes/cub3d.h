@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/03 18:26:21 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:41:24 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@
 # define PLAYER_SPEED 5
 # define PLAYER_ROT_SPEED 0.157
 # define PLAYER_SIZE 6
-# define MINIMAP_VS 320 // visibility scale in pixels, then visibility radius is MINIMAP_VS/2
 # define MINIMAP_SCALE 1.0
-# define TILE_SIZE 64
-# define MINIMAP_TILE_SIZE 32
+# define TILE_SIZE 32
+# define TILE_SIZE 32
 # define M_PI 3.14159265358979323846
 # define M_PI_2 1.57079632679489661923
 

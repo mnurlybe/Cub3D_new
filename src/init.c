@@ -21,8 +21,8 @@ void init_minimap(t_file *game_data, t_cub3d *cub3d)
 {
     cub3d->minimap->w_tiles = game_data->map_w_tiles;
     cub3d->minimap->h_tiles = game_data->map_h_tiles;
-    cub3d->minimap->w_pixels = game_data->map_w_tiles * MINIMAP_TILE_SIZE;
-    cub3d->minimap->h_pixels = game_data->map_h_tiles * MINIMAP_TILE_SIZE;
+    cub3d->minimap->w_pixels = game_data->map_w_tiles * TILE_SIZE;
+    cub3d->minimap->h_pixels = game_data->map_h_tiles * TILE_SIZE;
     copy_map(game_data, cub3d->minimap);
     // print minimap --> remove this before submitting
     for (size_t i = 0; i < cub3d->minimap->h_tiles; i++)

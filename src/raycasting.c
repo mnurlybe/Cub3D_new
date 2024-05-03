@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 11:52:40 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/03 18:17:32 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:42:29 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ double	raycast(t_cub3d *cub3d, double dir)
 			side_dist_y += delta_dist_y * TILE_SIZE;
 		}
 	}
-	//draw_line2(cub3d->img, p_x, p_y, x, y, 0x00FF0000);
+	draw_line2(cub3d->img, p_x, p_y, x, y, 0x00FF0000);
 	double prep_wall_dist = (side_dist_x < side_dist_y) ? side_dist_x : side_dist_y;
 	prep_wall_dist *= cos(cub3d->P->dir - dir);
 	
@@ -237,6 +237,7 @@ void	fov_cast(void *ptr)
 	{
 		distance = raycast(cub3d, cub3d->P->dir + curr_dir);
 		draw_view(cub3d, distance, i++);
+		(void) distance;
 		curr_dir += deg_to_rad(1);
 	}
 }
