@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/03 17:37:00 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:26:21 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_cub3d
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	size_t		width;
-	size_t		height;N
+	size_t		height;
 	t_player	*P;
 	t_minimap	*minimap;
 }				t_cub3d;
@@ -78,14 +78,22 @@ typedef struct s_cub3d
 void draw_map(void *ptr);
 void draw_player(t_cub3d *cub3d);
 
+//cast field of view
+void fov_cast(void *ptr);
+
 // init.c
 void init(t_cub3d *cub3d, t_file *game_data);
 
-// movement.c
-void handle_movement(void *ptr);
+// parse_file.c
+t_file *parse_file(char *file);
+
+// map_utils.c
+void get_map(t_file *game);
+void    copy_map(t_file *game_data, t_minimap *minimap);
 
 // keys.c
 void handle_keys(void *ptr);
+void handle_movement(void *ptr);
 
 // free.c
 void free_program(t_cub3d *cub3d);

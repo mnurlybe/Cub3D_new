@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:39 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/02 17:36:45 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/03 18:27:23 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int    ft_cub3d(t_file *game_data)
     mlx_loop_hook(cub3d->mlx, draw_map, cub3d);
     mlx_loop_hook(cub3d->mlx, handle_movement, cub3d);
     mlx_loop_hook(cub3d->mlx, handle_keys, cub3d);
+	mlx_loop_hook(cub3d->mlx, fov_cast, cub3d);
     mlx_loop(cub3d->mlx);
     mlx_delete_image(cub3d->mlx, cub3d->img);
 	mlx_close_window(cub3d->mlx);

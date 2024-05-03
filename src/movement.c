@@ -21,6 +21,7 @@ void rotation(t_cub3d *cub3d)
         if (cub3d->P->dir > 2 * M_PI)
             cub3d->P->dir -= 2 * M_PI;
     }
+//	printf("dir: %lf\n", cub3d->P->dir);
 }
 
 /**
@@ -74,6 +75,7 @@ void move_player(t_cub3d *cub3d)
             cub3d->P->mini_y = new_y;
         }
     }
+//	printf("ppos: (%5lf | %5lf)\n", cub3d->P->mini_x, cub3d->P->mini_y);	 
 }
 
 void handle_movement(void *ptr)
