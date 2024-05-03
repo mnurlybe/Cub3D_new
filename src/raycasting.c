@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 11:52:40 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/03 16:38:53 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/03 16:41:30 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 //Changes I would like to introduce:
 // 1. I would like to have a struct that holds the player position as vector
 // 2. The player position should be a integer value
-// 3. The player direction should be a float value
+// 3. The player direction should be a float value (Maybe not needed anymore)
 // 4. FOV should be in radient value
 // 5. We should also include .d files so that we can recompile the project whent he header files change
 // 6. The player movement should not be dependent on the frame rate or the refresh rate of the screen
