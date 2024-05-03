@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 17:49:18 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/01 09:58:25 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/03 15:24:45 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,8 @@ int    ft_cub3d(void)
         free(cub3d);
         return (1); 
     }
-    mlx_image_to_window(cub3d->mlx, cub3d->img, 0, 0);  
-
-    mlx_put_pixel(cub3d->img, 250, 250, 0xFF0000FF);
-    
-    mlx_loop_hook(cub3d->mlx, draw_minimap, cub3d);
+    mlx_image_to_window(cub3d->mlx, cub3d->img, 0, 0);
+    //mlx_loop_hook(cub3d->mlx, draw_minimap, cub3d); 
     mlx_loop_hook(cub3d->mlx, handle_movement, cub3d);
     mlx_loop_hook(cub3d->mlx, handle_keys, cub3d);
 	mlx_loop_hook(cub3d->mlx, fov_cast, cub3d);
