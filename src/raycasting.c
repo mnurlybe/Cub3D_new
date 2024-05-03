@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 11:52:40 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/03 16:30:49 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/03 16:38:53 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,21 @@
 // 3. The player direction should be a float value
 // 4. FOV should be in radient value
 // 5. We should also include .d files so that we can recompile the project whent he header files change
+// 6. The player movement should not be dependent on the frame rate or the refresh rate of the screen
+
+
+// TODO: Implement edge case when the ray is vertical or horizontal
+// TODO: Improve structure of the code
+// TODO: Deleted unnecessary lines and comments
+// TODO: Improve 3D rendering
+//			- Implement rendring of different textures
+//			- Implement rendering of sprites
+//			- Implement rendering of the floor and ceiling
+//			- Implement rendering of the skybox
+//			- Implement rendering of the HUD
+//			- Implement rendering of the minimap
+
+// TODO: 
 
 
 # define deg_to_rad(angle) (angle * M_PI / 180)
