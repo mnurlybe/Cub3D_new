@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/02 20:09:59 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/03 17:37:00 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define MINIMAP_VS 320 // visibility scale in pixels, then visibility radius is MINIMAP_VS/2
 # define MINIMAP_SCALE 1.0
 # define TILE_SIZE 64
-# define MINIMAP_TILE_SIZE 16
+# define MINIMAP_TILE_SIZE 32
 # define M_PI 3.14159265358979323846
 # define M_PI_2 1.57079632679489661923
 
@@ -69,7 +69,7 @@ typedef struct s_cub3d
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	size_t		width;
-	size_t		height;
+	size_t		height;N
 	t_player	*P;
 	t_minimap	*minimap;
 }				t_cub3d;
@@ -100,8 +100,5 @@ void    copy_map(t_file *game_data, t_minimap *minimap);
 
 // player_utils.c
 char set_player_position(t_file *game_data, t_cub3d *cub3d);
-
-// draw_minimap_vis.c
-// void draw_minimap_visibile(t_cub3d *cub3d);
 
 #endif
