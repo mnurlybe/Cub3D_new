@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 11:52:40 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/10 18:32:22 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/10 19:51:11 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,9 +184,9 @@ void	raycast(t_cub3d *cub3d, t_ray *ray)
 			if (ray->wall > 0)
 			{
 				if (dir.x < 0)
-					ray->side = 'W';
+					ray->side = 2;
 				else
-					ray->side = 'E';
+					ray->side = 3;
 				break;
 			}
 			side_dist.x += delta_dist_x * TILE_SIZE;
@@ -198,9 +198,9 @@ void	raycast(t_cub3d *cub3d, t_ray *ray)
 			if (ray->wall > 0)
 			{
 				if (dir.y < 0)
-					ray->side = 'N';
+					ray->side = 0;
 				else
-					ray->side = 'S';
+					ray->side = 1;
 				break;
 			}
 			side_dist.y += delta_dist_y * TILE_SIZE;
@@ -243,50 +243,40 @@ void	raycast(t_cub3d *cub3d, t_ray *ray)
 	}
 } */
 
-void draw_view(t_cub3d *cub3d, t_ray *ray)
+void draw_textured_wall(t_cub3d *cub3d, t_ray *ray)
 {
-    int min_x = ray->index * (cub3d->width / FOV);
-    int max_x = (ray->index + 1) * (cub3d->width / FOV);
-    int texture_width = TEXTURE_WIDTH; // Assume TEXTURE_WIDTH is defined
-    int texture_height = TEXTURE_HEIGHT; // Assume TEXTURE_HEIGHT is defined
-    uint32_t **texture;
+	int x = ray->index * (cub3d->width / FOV);
 
-    switch(ray->side) {
-        case 'N': texture = cub3d->textures.north; break;
-        case 'S': texture = cub3d->textures.south; break;
-        case 'E': texture = cub3d->textures.east; break;
-        case 'W': texture = cub3d->textures.west; break;
-    }
+    // Calculate width and height of the texture
+    int texWidth = cub3d->textures[ray->side].width;
+    int texHeight = cub3d->textures[ray->side].height;
 
-    int current_height = (int) (cub3d->height / ray->distance);
-    int start = (cub3d->height - current_height) / 2;
-    int end = start + current_height;
+    // Calculate value of wallX
+    double wallX; // Where exactly the wall was hit
+    if (ray->side == 0 || ray->side == 1)
+        wallX = cub3d->P->pos.x + ray->distance * ray->dir.x;
+    else
+        wallX = cub3d->P->pos.y + ray->distance * ray->dir.y;
+    wallX -= floor(wallX);
 
-    for (int x = min_x; x < max_x; x++)
+    // X coordinate on the texture
+    int texX = (int)(wallX * (double)texWidth);
+	if ((ray->side == 0 && ray->dir.x > 0) || (ray->side == 1 && ray->dir.x < 0))
+		texX = texWidth - texX - 1;
+	int line_height = (int)(cub3d->height / ray->distance);
+    // How much to increase the texture coordinate per screen pixel
+    double step = 1.0 * texHeight / line_height;
+    // Starting texture coordinate
+	double draw_start = -line_height / 2 + cub3d->height / 2;
+    double texPos = (draw_start - cub3d->height / 2 + line_height / 2) * step;
+	double draw_end = line_height / 2 + cub3d->height / 2;
+    for(int y = draw_start; y < draw_end; y++)
     {
-        for (int y = start; y < end; y++)
-        {
-            double texPos = (y - start) / (double)current_height;
-            int texY = texPos * texture_height;
-            double wallX; // Where exactly the wall was hit
-
-            if(ray->side == 'N' || ray->side == 'S') {
-                wallX = cub3d->P->pos.x + ray->distance * ray->dir.x;
-            } else {
-                wallX = cub3d->P->pos.y + ray->distance * ray->dir.y;
-            }
-            wallX -= floor(wallX); // Get fractional part
-
-            int texX = (int)(wallX * (double)texture_width);
-            if(ray->side == 'E' || ray->side == 'S') texX = texture_width - texX - 1; // Reverse texture on these walls
-
-            uint32_t color = texture[texY][texX];
-            mlx_put_pixel(cub3d->img, x, y, color);
-        }
-        for (int y = 0; y < start; y++) // Ceiling
-            mlx_put_pixel(cub3d->img, x, y, 0x00FFFFFF);
-        for (int y = end; y < cub3d->height; y++) // Floor
-            mlx_put_pixel(cub3d->img, x, y, 0xFF000000);
+        // Cast the texture coordinate to an integer, and mask with (texHeight - 1) in case of overflow
+        int texY = (int)texPos & (texHeight - 1);
+        texPos += step;
+        uint32_t color = cub3d->textures[ray->side].data[texHeight * texY + texX];
+		mlx_put_pixel(cub3d->img, x, y, color);
     }
 }
 
@@ -304,7 +294,8 @@ void	fov_cast(void *ptr)
 		ray.angle = cub3d->P->dir + curr_dir;
 		ray.dir = angle_to_vec(cub3d->P->dir + curr_dir);
 		raycast(cub3d, &ray);
-		draw_view(cub3d, &ray);
+		//draw_view(cub3d, &ray);
+		draw_textured_wall(cub3d, &ray);
 		curr_dir += deg_to_rad(1);
 	}
 }

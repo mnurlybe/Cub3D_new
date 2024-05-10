@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/10 18:58:11 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/10 19:38:32 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_ray
 	double	angle;
 	t_vec	dir;
 	int		wall;
-	char 	side;
+	int 	side;
 	double 	distance;
 }	t_ray;
 
@@ -72,6 +72,10 @@ typedef struct s_tex
 	mlx_image_t	*img;
 	int			width;
 	int			height;
+	int			*data;
+	int			bpp;
+	int			size_line;
+	int			endian;
 }	t_tex;
 
 /**
@@ -123,7 +127,7 @@ typedef struct s_cub3d
 	size_t		width;
 	size_t		height;
 	t_player	*P;
-	t_tex 		tex[4];
+	t_tex 		textures[4];
 	t_minimap	*minimap;
 }				t_cub3d;
 

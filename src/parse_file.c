@@ -51,5 +51,9 @@ t_file *parse_file(char *file)
     free(temp);
     // copy full map from split_file to map
     get_map(info);
+    info->no = "textures/brick.png";
+    info->so = "textures/brick2.png";
+    info->we = "textures/bark.png";
+    info->ea = "textures/bones.png";
     return (info);
 }
