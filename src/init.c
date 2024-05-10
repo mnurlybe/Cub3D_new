@@ -3,6 +3,7 @@
 void init_player(t_file *game_data, t_cub3d *cub3d)
 {
     char direction;
+
     direction = set_player_position(game_data, cub3d);
     if (direction == 'N')
         cub3d->P->dir = 1.5 * M_PI;
@@ -12,8 +13,9 @@ void init_player(t_file *game_data, t_cub3d *cub3d)
         cub3d->P->dir = 0;
     else if (direction == 'W')
         cub3d->P->dir = M_PI;
-    
-    cub3d->P->dir = M_PI;
+    cub3d->P->dir = 0.5 * M_PI;
+    cub3d->P->dir_vec.x = cos(cub3d->P->dir);
+    cub3d->P->dir_vec.y = sin(cub3d->P->dir);
     cub3d->P->fov = FOV;
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 11:52:40 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/03 18:42:29 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/10 18:32:22 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,6 @@
 
 # define deg_to_rad(angle) (angle * M_PI / 180)
 # define rad_to_deg(radient) (radient * 180 / M_PI)
-
-#define ORANGE 0xFFFFA500
-#define TURQUOISE 0xFF40E0D0
 
 void draw_cross(mlx_image_t *img, int x, int y, int size, int color)
 {
@@ -98,6 +95,14 @@ void draw_circle_trig(mlx_image_t *img, int center_x, int center_y, int radius, 
     }
 }
 
+int nearest_int(double value)
+{
+	if (value >= 0)
+		return ((int) (value + 0.5));
+	else
+		return ((int) (value - 0.5));
+}
+
 void draw_line2(mlx_image_t *img, double x1, double y1, double x2, double y2, int color) {
     int dx = (int)(x2 - x1);
     int dy = (int)(y2 - y1);
@@ -110,18 +115,10 @@ void draw_line2(mlx_image_t *img, double x1, double y1, double x2, double y2, in
     double y = y1;
 
     for (int i = 0; i <= steps; i++) { // Iterate up to and including steps
-        mlx_put_pixel(img, (int)(x + 0.5), (int)(y + 0.5), color); // Use rounding to nearest integer
+        mlx_put_pixel(img, nearest_int(x), nearest_int(y), color); // Use rounding to nearest integer
         x += xinc;
         y += yinc;
     }
-}
-
-int nearest_int(double value) {
-	if (value >= 0) {
-		return (int)(value + 0.5);
-	} else {
-		return (int)(value - 0.5);
-	}
 }
 
 int nearest_x_or_y(double value, int max_value) {
@@ -138,78 +135,98 @@ int nearest_x_or_y(double value, int max_value) {
 	}
 }
 
-double	raycast(t_cub3d *cub3d, double dir)
+void	raycast(t_cub3d *cub3d, t_ray *ray)
 {
-	int p_x = cub3d->P->mini_x;
-	int p_y = cub3d->P->mini_y;
-	int map_x = p_x / TILE_SIZE;
-	int map_y = p_y / TILE_SIZE;
-	double dir_x = cos(dir);
-	double dir_y = sin(dir);
-	double delta_dist_x = (fabs(dir_x) < 1e-10) ? 0.0 : sqrt(1 + (dir_y * dir_y) / (dir_x * dir_x));
-	double delta_dist_y = (fabs(dir_y) < 1e-10) ? 0.0 : sqrt(1 + (dir_x * dir_x) / (dir_y * dir_y));
-	double side_dist_x;
-	double side_dist_y;
-	if (dir_x < 0)
-		side_dist_x = (p_x - map_x * TILE_SIZE) * delta_dist_x;
+	t_vec p = cub3d->P->pos;
+	int map_x = p.x / TILE_SIZE;
+	int map_y = p.y / TILE_SIZE;
+	//t_vec map = vec_scal_m(cub3d->P->pos, (double) 1 / TILE_SIZE);
+	t_vec dir = ray->dir;
+	double delta_dist_x = (fabs(dir.x) < 1e-10) ? 0.0 : sqrt(1 + (dir.y * dir.y) / (dir.x * dir.x));
+	double delta_dist_y = (fabs(dir.y) < 1e-10) ? 0.0 : sqrt(1 + (dir.x * dir.x) / (dir.y * dir.y));
+	t_vec side_dist;
+	if (dir.x < 0)
+		side_dist.x = (p.x - map_x * TILE_SIZE) * delta_dist_x;
 	else
-		side_dist_x = ((map_x + 1) * TILE_SIZE - p_x) * delta_dist_x;
-	if (dir_y < 0)
-		side_dist_y = (p_y - map_y * TILE_SIZE) * delta_dist_y;
+		side_dist.x = ((map_x + 1) * TILE_SIZE - p.x) * delta_dist_x;
+	if (dir.y < 0)
+		side_dist.y = (p.y - map_y * TILE_SIZE) * delta_dist_y;
 	else
-		side_dist_y = ((map_y + 1) * TILE_SIZE - p_y) * delta_dist_y;
+		side_dist.y = ((map_y + 1) * TILE_SIZE - p.y) * delta_dist_y;
 	int x;
 	int y;
-	int step_x = (dir_x < 0) ? -1 : 1;
-	int step_y = (dir_y < 0) ? -1 : 1;
+	int step_x = (dir.x < 0) ? -1 : 1;
+	int step_y = (dir.y < 0) ? -1 : 1;
 	while (true)
 	{
-		if (side_dist_x < side_dist_y)
+		if ((side_dist.x < side_dist.y && side_dist.x > 1e-10)|| side_dist.y < 1e-10)
 		{
-			if (dir_x < 0)
+			if (dir.x < 0)
 				x = map_x * TILE_SIZE;
 			else
 				x = (map_x + 1) * TILE_SIZE;
-			y = nearest_x_or_y(p_y + (x - p_x) * tan(dir), cub3d->minimap->h_pixels);
+			y = nearest_x_or_y(p.y + (x - p.x) * tan(ray->angle), cub3d->minimap->h_pixels);
 			//draw_rotated_cross(cub3d->img, x, y, 4, 2, ORANGE);
 		}
 		else
 		{
-			if (dir_y < 0)
+			if (dir.y < 0)
 				y = map_y * TILE_SIZE;
 			else
 				y = (map_y + 1) * TILE_SIZE;
-			x = nearest_x_or_y(p_x + (y - p_y) / tan(dir), cub3d->minimap->w_pixels);
+			x = nearest_x_or_y(p.x + (y - p.y) / tan(ray->angle), cub3d->minimap->w_pixels);
 			//draw_circle_trig(cub3d->img, x, y, 5, 1,TURQUOISE);
 		}
-		if (side_dist_x < side_dist_y)
+		if ((side_dist.x < side_dist.y && side_dist.x > 1e-10) || side_dist.y < 1e-10)
 		{
 			map_x += step_x;
-			if (cub3d->minimap->map[map_y][map_x] > 0)
+			ray->wall = cub3d->minimap->map[map_y][map_x];
+			if (ray->wall > 0)
+			{
+				if (dir.x < 0)
+					ray->side = 'W';
+				else
+					ray->side = 'E';
 				break;
-			side_dist_x += delta_dist_x * TILE_SIZE;
+			}
+			side_dist.x += delta_dist_x * TILE_SIZE;
 		}
 		else
 		{
 			map_y += step_y;
-			if (cub3d->minimap->map[map_y][map_x] > 0)
+			ray->wall = cub3d->minimap->map[map_y][map_x];
+			if (ray->wall > 0)
+			{
+				if (dir.y < 0)
+					ray->side = 'N';
+				else
+					ray->side = 'S';
 				break;
-			side_dist_y += delta_dist_y * TILE_SIZE;
+			}
+			side_dist.y += delta_dist_y * TILE_SIZE;
 		}
 	}
-	draw_line2(cub3d->img, p_x, p_y, x, y, 0x00FF0000);
-	double prep_wall_dist = (side_dist_x < side_dist_y) ? side_dist_x : side_dist_y;
-	prep_wall_dist *= cos(cub3d->P->dir - dir);
-	
-	return (prep_wall_dist);
+	//draw_line2(cub3d->img, p.x, p.y, x, y, 0x00FF0000);
+	ray->pos.x = x;
+	ray->pos.y = y;
+	ray->distance = ((side_dist.x < side_dist.y && side_dist.x > 1e-10) || side_dist.y < 1e-10) ? side_dist.x : side_dist.y;
+	ray->distance *= cos(cub3d->P->dir - ray->angle);
 }
 
-void draw_view(t_cub3d *cub3d, double distance, int i)
+/* void draw_view(t_cub3d *cub3d, t_ray *ray)
 {
-	int min_x = i * (cub3d->width / FOV);
-	int max_x = (i + 1) * (cub3d->width / FOV);
-	int curr_color = 0xFF0000FF;
-	int current_height = (int)(cub3d->height / distance);
+	int min_x = ray->index * (cub3d->width / FOV);
+	int max_x = (ray->index + 1) * (cub3d->width / FOV);
+	int curr_color;
+	if (ray->side == 'N')
+		curr_color = GREEN;
+	else if (ray->side == 'S')
+		curr_color = BLUE;
+	else if (ray->side == 'E')
+		curr_color = RED;
+	else if (ray->side == 'W')
+		curr_color = YELLOW;
+	int current_height = (int) (cub3d->height / ray->distance);
 	int start = (cub3d->height - current_height) / 2;
 	int end = start + current_height;
 	for (int x = min_x; x < max_x; x++)
@@ -224,20 +241,70 @@ void draw_view(t_cub3d *cub3d, double distance, int i)
 				mlx_put_pixel(cub3d->img, x, y, 0xFF000000);
 		}
 	}
+} */
+
+void draw_view(t_cub3d *cub3d, t_ray *ray)
+{
+    int min_x = ray->index * (cub3d->width / FOV);
+    int max_x = (ray->index + 1) * (cub3d->width / FOV);
+    int texture_width = TEXTURE_WIDTH; // Assume TEXTURE_WIDTH is defined
+    int texture_height = TEXTURE_HEIGHT; // Assume TEXTURE_HEIGHT is defined
+    uint32_t **texture;
+
+    switch(ray->side) {
+        case 'N': texture = cub3d->textures.north; break;
+        case 'S': texture = cub3d->textures.south; break;
+        case 'E': texture = cub3d->textures.east; break;
+        case 'W': texture = cub3d->textures.west; break;
+    }
+
+    int current_height = (int) (cub3d->height / ray->distance);
+    int start = (cub3d->height - current_height) / 2;
+    int end = start + current_height;
+
+    for (int x = min_x; x < max_x; x++)
+    {
+        for (int y = start; y < end; y++)
+        {
+            double texPos = (y - start) / (double)current_height;
+            int texY = texPos * texture_height;
+            double wallX; // Where exactly the wall was hit
+
+            if(ray->side == 'N' || ray->side == 'S') {
+                wallX = cub3d->P->pos.x + ray->distance * ray->dir.x;
+            } else {
+                wallX = cub3d->P->pos.y + ray->distance * ray->dir.y;
+            }
+            wallX -= floor(wallX); // Get fractional part
+
+            int texX = (int)(wallX * (double)texture_width);
+            if(ray->side == 'E' || ray->side == 'S') texX = texture_width - texX - 1; // Reverse texture on these walls
+
+            uint32_t color = texture[texY][texX];
+            mlx_put_pixel(cub3d->img, x, y, color);
+        }
+        for (int y = 0; y < start; y++) // Ceiling
+            mlx_put_pixel(cub3d->img, x, y, 0x00FFFFFF);
+        for (int y = end; y < cub3d->height; y++) // Floor
+            mlx_put_pixel(cub3d->img, x, y, 0xFF000000);
+    }
 }
+
 
 void	fov_cast(void *ptr)
 {
 	t_cub3d	*cub3d = (t_cub3d *) ptr;
-	int		i = 0;
-	double	distance;
+	t_ray	ray;
 
+	ray.index = 0;
 	double curr_dir = deg_to_rad(-FOV / 2);
 	while (curr_dir < deg_to_rad(FOV / 2))
 	{
-		distance = raycast(cub3d, cub3d->P->dir + curr_dir);
-		draw_view(cub3d, distance, i++);
-		(void) distance;
+		ray.index++;
+		ray.angle = cub3d->P->dir + curr_dir;
+		ray.dir = angle_to_vec(cub3d->P->dir + curr_dir);
+		raycast(cub3d, &ray);
+		draw_view(cub3d, &ray);
 		curr_dir += deg_to_rad(1);
 	}
 }

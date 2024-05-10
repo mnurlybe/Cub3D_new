@@ -10,43 +10,18 @@
 
 void draw_minimap(t_cub3d *cub3d)
 {
-
     size_t x = 0;
     size_t y = 0;
-    size_t t_x = 0;
-    size_t t_y = 0;
-    while(y < cub3d->minimap->h_tiles)
+    while (y < cub3d->minimap->h_pixels)
     {
-        while(x < cub3d->minimap->w_tiles)
+        while (x < cub3d->minimap->w_pixels)
         {
-            if (cub3d->minimap->map[y][x] == 1)
-            {
-                t_y = y * TILE_SIZE;
-                while(t_y < (y + 1) * TILE_SIZE)
-                {
-                    t_x = x * TILE_SIZE;
-                    while(t_x < (x + 1) * TILE_SIZE)
-                    {
-                        mlx_put_pixel(cub3d->img, t_x, t_y, 0x008000FF); //green
-                        t_x++;
-                    }
-                    t_y++;
-                }
-            }
+            if (cub3d->minimap->map[y / TILE_SIZE][x / TILE_SIZE] > 0)
+                mlx_put_pixel(cub3d->img, x, y, GREEN);
             else
-            {
-                t_y = y * TILE_SIZE;
-                while(t_y < (y + 1) * TILE_SIZE)
-                {
-                    t_x = x * TILE_SIZE;
-                    while(t_x < (x + 1) * TILE_SIZE)
-                    {
-                        mlx_put_pixel(cub3d->img, t_x, t_y, 0xFFFFFFFF); //white
-                        t_x++;
-                    }
-                    t_y++;
-                }
-            }
+                mlx_put_pixel(cub3d->img, x, y, WHITE);
+            if (x % TILE_SIZE == 0 || y % TILE_SIZE == 0 || x == cub3d->minimap->w_pixels - 1 || y == cub3d->minimap->h_pixels - 1)
+                mlx_put_pixel(cub3d->img, x, y, BLACK);
             x++;
         }
         x = 0;
@@ -56,17 +31,27 @@ void draw_minimap(t_cub3d *cub3d)
 
 void draw_player(t_cub3d *cub3d)
 {
-    size_t i = 0;
-    size_t j = 0;
-    while(i < PLAYER_SIZE)
+    int delta_x;
+    int delta_y;
+    int x;
+    int y;
+
+    delta_x = - PLAYER_SIZE / 2;
+    delta_y = - PLAYER_SIZE / 2;
+    while (delta_x <= PLAYER_SIZE / 2)
     {
-        while(j < PLAYER_SIZE)
+        x = delta_x + cub3d->P->pos.x;
+        while (delta_y <= PLAYER_SIZE / 2)
         {
-            mlx_put_pixel(cub3d->img, cub3d->P->mini_x + i, cub3d->P->mini_y + j, 0xFF0000FF); //red
-            j++;
+            if (delta_x * delta_x + delta_y * delta_y <= PLAYER_SIZE * PLAYER_SIZE / 4 + 1)
+            {
+                y = delta_y + cub3d->P->pos.y;
+                mlx_put_pixel(cub3d->img, x, y, PLAYER_COLOR);
+            }
+            delta_y++;
         }
-        j = 0;
-        i++;
+        delta_y = - PLAYER_SIZE / 2;
+        delta_x++;
     }
 }
 
@@ -104,11 +89,9 @@ void draw_line(mlx_image_t *img, double x1, double y1, double x2, double y2, int
 
 void draw_player_direction(t_cub3d *cub3d)
 {
-    double x = cub3d->P->mini_x + PLAYER_SIZE / 2;
-    double y = cub3d->P->mini_y + PLAYER_SIZE / 2;
-    double x2 = x + cos(cub3d->P->dir) * PLAYER_SIZE;
-    double y2 = y + sin(cub3d->P->dir) * PLAYER_SIZE;
-    draw_line(cub3d->img, x, y, x2, y2, 0xFF0000FF); //black
+    double x = cub3d->P->pos.x + cos(cub3d->P->dir) * PLAYER_SIZE;
+    double y = cub3d->P->pos.y + sin(cub3d->P->dir) * PLAYER_SIZE;
+    draw_line(cub3d->img, cub3d->P->pos.x, cub3d->P->pos.y, x, y, PLAYER_COLOR); //black
 }
 
 void draw_map(void *ptr)
