@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/17 13:21:19 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/17 21:58:07 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ typedef struct s_file
 	int 	fd;
 	size_t 	file_size;
 	char 	**split_file;
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
-	int		floor;
-	int		ceiling;
+	char	**no;
+	char	**so;
+	char	**we;
+	char	**ea;
+	int		floor[3];
+	int		ceiling[3];
 	char	**map;
 	int		map_start_index;
 	int 	map_end_index;
@@ -92,6 +92,7 @@ void handle_movement(void *ptr);
 // free.c
 void free_program(t_cub3d *cub3d);
 void free_game(t_file *game);
+void free_array(char **arr);
 
 // parse_file.c
 t_file *parse_file(char *file);
@@ -99,11 +100,23 @@ t_file *parse_file(char *file);
 // check_file.c
 int check_file(t_file *info);
 
+// check_file_utils.c
+int is_only_whitespace(char *line);
+int is_only_ones(char *line);
+int array_len(char **array);
+int is_num(char *str);
+int is_only_allowed_chars(char *str);
+
 // map_utils.c
 void get_map(t_file *game);
 void    copy_map(t_file *game_data, t_minimap *minimap);
 
 // player_utils.c
 char set_player_position(t_file *game_data, t_cub3d *cub3d);
+
+
+// print_testing.c
+void print_textures(t_file *info);
+void print_floor_ceiling(char **arr);
 
 #endif

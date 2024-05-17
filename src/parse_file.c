@@ -13,8 +13,6 @@ void init_info(t_file *info)
     info->so = NULL;
     info->we = NULL;
     info->ea = NULL;
-    info->floor = -1;
-    info->ceiling = -1;
     info->map = NULL;
     info->map_start_index = -1;
     info->map_end_index = -1;
@@ -67,13 +65,7 @@ t_file *parse_file(char *file)
     free(temp);
     // ADD FULL FILE PARSE AND CHECKS HERE BEFORE COPYINT THE MAP
     check_file(info);
-    // print -> to be removed
-    // for (size_t i = 0; i < info->file_size; i++)
-    // {
-    //     // also print address of each line
-    //     printf("%s", info->split_file[i]);
-    // }
     // copy full map from split_file to map
-    get_map(info); 
+    get_map(info);
     return (info);
 }
