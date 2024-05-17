@@ -1,5 +1,10 @@
 # Cub3D
 
+
+file error management: 
+1. 
+
+
 map error management:
 1. Find start and end index;
 2. No empty lines, otherwise error;

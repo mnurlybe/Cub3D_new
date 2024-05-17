@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/03 18:41:24 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:21:19 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct s_file
 	int		floor;
 	int		ceiling;
 	char	**map;
+	int		map_start_index;
+	int 	map_end_index;
 	size_t  map_h_tiles;
 	size_t  map_w_tiles;
 }				t_file;
@@ -83,13 +85,6 @@ void fov_cast(void *ptr);
 // init.c
 void init(t_cub3d *cub3d, t_file *game_data);
 
-// parse_file.c
-t_file *parse_file(char *file);
-
-// map_utils.c
-void get_map(t_file *game);
-void    copy_map(t_file *game_data, t_minimap *minimap);
-
 // keys.c
 void handle_keys(void *ptr);
 void handle_movement(void *ptr);
@@ -100,6 +95,9 @@ void free_game(t_file *game);
 
 // parse_file.c
 t_file *parse_file(char *file);
+
+// check_file.c
+int check_file(t_file *info);
 
 // map_utils.c
 void get_map(t_file *game);
