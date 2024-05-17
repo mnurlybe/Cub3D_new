@@ -26,11 +26,11 @@ libft42:
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(SOURCES:$(SRC_DIR)/%.c=%.o))
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@gcc $(CFLAGS) -I $(MY_HEADER) -c $< -o $@
+	@gcc $(CFLAGS) -MMD -g -I $(MY_HEADER) -c $< -o $@
 	@echo -n "Compiling src... $<\r"
 
 $(NAME): $(OBJECTS)
-	@gcc $(CFLAGS) -o $(NAME) $(OBJECTS) $(MXL) $(LIBFLAGS) $(MLXFLAGS)
+	@gcc $(CFLAGS) -MMD -g -o $(NAME) $(OBJECTS) $(MXL) $(LIBFLAGS) $(MLXFLAGS)
 
 $(OBJ_DIR):
 	@mkdir -p $(dir $(OBJECTS))

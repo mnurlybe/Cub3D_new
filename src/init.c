@@ -35,37 +35,48 @@ void init_minimap(t_file *game_data, t_cub3d *cub3d)
     }
 }
 
-void load_texture(t_cub3d *cub3d, char *path, int index)
+char    *get_wall_side(int side)
 {
-    cub3d->textures[index].img = mlx_png_file_to_image(cub3d->mlx, path, &cub3d->textures[0].width, &cub3d->textures[0].height);
-    if (!cub3d->textures[index].img) {
-        fprintf(stderr, "Error loading texture: %s\n", path);
-        exit(EXIT_FAILURE);
-    }
-    cub3d->textures[index].data = (int *)mlx_get_data_addr(cub3d->textures[index].img, &cub3d->textures[index].bpp, &cub3d->textures[index].size_line, &cub3d->textures[index].endian);
+    if (side == NORTH)
+        return ("NO");
+    else if (side == SOUTH)
+        return ("SO");
+    else if (side == EAST)
+        return ("EA");
+    else if (side == WEST)
+        return ("WE");
+    return ("");
 }
 
-void init_textures(t_file *game_data, t_cub3d *cub3d)
+void    init_textures(t_file *game_data, t_cub3d *cub3d)
 {
-    load_texture(cub3d, game_data->no, 0);
-    load_texture(cub3d, game_data->so, 1);
-    load_texture(cub3d, game_data->we, 2);
-    load_texture(cub3d, game_data->ea, 3);
+    int index = 0;
+    while (game_data->texture_paths[index])
+    {
+        cub3d->textures[index] = mlx_load_png(game_data->texture_paths[index]);
+        if (!cub3d->textures[index])
+        {
+            printf("Error loading texture %s\n", game_data->texture_paths[index]);
+            exit(1);
+        }
+        else
+            printf("%s %s\n", get_wall_side(index), game_data->texture_paths[index]);
+        index++;
+    }
 }
 
 // init cub3d struct
 void init(t_cub3d *cub3d, t_file *game_data)
 {
-    int index = 0;
     cub3d->width = 1024;
     cub3d->height = 1024;
     cub3d->P = malloc(sizeof(t_player));
     if (!cub3d->P)
         return ; // add proper error message
     init_player(game_data, cub3d);
+    init_textures(game_data, cub3d);
     cub3d->minimap = malloc(sizeof(t_minimap));
     if (!cub3d->minimap)
         return ; // add proper error message
     init_minimap(game_data, cub3d);
-    init_textures(game_data, cub3d);
 }

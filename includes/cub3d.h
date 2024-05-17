@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/10 19:38:32 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/16 12:53:52 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define PLAYER_ROT_SPEED 0.005
 # define PLAYER_SIZE 6
 # define MINIMAP_SCALE 1.0
-# define TILE_SIZE 8
+# define TILE_SIZE 4
 # define M_PI 3.14159265358979323846
 # define M_PI_2 1.57079632679489661923
 
@@ -56,27 +56,25 @@ typedef struct s_vec
 	double	y;
 }	t_vec;
 
+typedef enum e_wallside
+{
+	NORTH,
+	SOUTH,
+	WEST,
+	EAST,
+}	t_wallside;
+
 typedef struct s_ray
 {
-	int		index;
-	t_vec	pos;
-	double	angle;
-	t_vec	dir;
-	int		wall;
-	int 	side;
-	double 	distance;
+	int			index;
+	t_vec		wall_hit;
+	double		angle;
+	t_vec		dir;
+	int			wall;
+	t_wallside	side;
+	double 		distance;
+	t_vec		prev_wall_hit;
 }	t_ray;
-
-typedef struct s_tex
-{
-	mlx_image_t	*img;
-	int			width;
-	int			height;
-	int			*data;
-	int			bpp;
-	int			size_line;
-	int			endian;
-}	t_tex;
 
 /**
  * Struct s_player - Represents a player in the 2D world.
@@ -108,10 +106,7 @@ typedef struct s_file
 	int 	fd;
 	size_t 	file_size;
 	char 	**split_file;
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
+	char 	**texture_paths;
 	int		floor;
 	int		ceiling;
 	char	**map;
@@ -122,14 +117,14 @@ typedef struct s_file
 // mlx struct window, image and their dimenstions
 typedef struct s_cub3d
 {
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-	size_t		width;
-	size_t		height;
-	t_player	*P;
-	t_tex 		textures[4];
-	t_minimap	*minimap;
-}				t_cub3d;
+	mlx_t			*mlx;
+	mlx_image_t		*img;
+	size_t			width;
+	size_t			height;
+	t_player		*P;
+	mlx_texture_t	*textures[4];
+	t_minimap		*minimap;
+}					t_cub3d;
 
 // draw_minimap.c
 void draw_map(void *ptr);

@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 11:52:40 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/10 19:51:11 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/16 13:54:56 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,9 +184,9 @@ void	raycast(t_cub3d *cub3d, t_ray *ray)
 			if (ray->wall > 0)
 			{
 				if (dir.x < 0)
-					ray->side = 2;
+					ray->side = WEST;
 				else
-					ray->side = 3;
+					ray->side = EAST;
 				break;
 			}
 			side_dist.x += delta_dist_x * TILE_SIZE;
@@ -198,17 +198,17 @@ void	raycast(t_cub3d *cub3d, t_ray *ray)
 			if (ray->wall > 0)
 			{
 				if (dir.y < 0)
-					ray->side = 0;
+					ray->side = NORTH;
 				else
-					ray->side = 1;
+					ray->side = SOUTH;
 				break;
 			}
 			side_dist.y += delta_dist_y * TILE_SIZE;
 		}
 	}
-	//draw_line2(cub3d->img, p.x, p.y, x, y, 0x00FF0000);
-	ray->pos.x = x;
-	ray->pos.y = y;
+	draw_line2(cub3d->img, p.x, p.y, x, y, 0x00FF0000);
+	ray->wall_hit.x = x;
+	ray->wall_hit.y = y;
 	ray->distance = ((side_dist.x < side_dist.y && side_dist.x > 1e-10) || side_dist.y < 1e-10) ? side_dist.x : side_dist.y;
 	ray->distance *= cos(cub3d->P->dir - ray->angle);
 }
@@ -218,13 +218,13 @@ void	raycast(t_cub3d *cub3d, t_ray *ray)
 	int min_x = ray->index * (cub3d->width / FOV);
 	int max_x = (ray->index + 1) * (cub3d->width / FOV);
 	int curr_color;
-	if (ray->side == 'N')
+	if (ray->side == NORTH)
 		curr_color = GREEN;
-	else if (ray->side == 'S')
+	else if (ray->side == SOUTH)
 		curr_color = BLUE;
-	else if (ray->side == 'E')
+	else if (ray->side == WEST)
 		curr_color = RED;
-	else if (ray->side == 'W')
+	else if (ray->side == EAST)
 		curr_color = YELLOW;
 	int current_height = (int) (cub3d->height / ray->distance);
 	int start = (cub3d->height - current_height) / 2;
@@ -234,16 +234,74 @@ void	raycast(t_cub3d *cub3d, t_ray *ray)
 		for (int y = 0; y < (int) cub3d->height; y++)
 		{
 			if (y >= start && y <= end)
+			{
 				mlx_put_pixel(cub3d->img, x, y, curr_color);
+			}
 			else if (y < start)
 				mlx_put_pixel(cub3d->img, x, y, 0x00FFFFFF);
 			else
 				mlx_put_pixel(cub3d->img, x, y, 0xFF000000);
 		}
 	}
-} */
+}
+ */
+uint32_t get_pixel_color(mlx_texture_t *texture, int x, int y)
+{
+	uint32_t *pixels = (uint32_t *)texture->pixels;
+	return (pixels[y * texture->width + x]);
+}
 
-void draw_textured_wall(t_cub3d *cub3d, t_ray *ray)
+void check_get_pixel(mlx_image_t *img, mlx_texture_t *texture)
+{
+	for (int x = 0; x < (int)texture->width; x++) {
+		for (int y = 0; y < (int)texture->height; y++) {
+			uint32_t color = get_pixel_color(texture, x, y);
+			mlx_put_pixel(img, x, y, color);
+		}
+	}
+}
+
+void draw_view(t_cub3d *cub3d, t_ray *ray)
+{
+	int min_x = ray->index * (cub3d->width / FOV);
+	int max_x = (ray->index + 1) * (cub3d->width / FOV);
+	int delta_height = (int) (cub3d->height / ray->distance);
+	int start = (cub3d->height - delta_height) / 2;
+	int end = start + delta_height;
+
+	int tex_num = ray->side;
+
+	double delta_tex_x = ray->distance * tan(deg_to_rad(1));
+	fabs(ray->angle - cub3d->P->dir) < 1e-4 ? printf("delta_tex_x: %f\n", delta_tex_x) : 0;
+	int tex_x;
+	if (ray->side == NORTH || ray->side == SOUTH)
+		tex_x = (int) (ray->wall_hit.x) % cub3d->textures[tex_num]->width;
+	else if (ray->side == EAST || ray->side == WEST)
+		tex_x = (int) (ray->wall_hit.y) % cub3d->textures[tex_num]->width;
+	for (int x = min_x; x < max_x; x++)
+	{
+		fabs(ray->angle - cub3d->P->dir) < 1e-4 ? printf("tex_x: %d\n", tex_x) : 0;
+		for (int y = 0; y < (int) cub3d->height; y++)
+		{
+			if (y >= start && y <= end)
+			{
+				double step = (double) cub3d->textures[tex_num]->height / delta_height;
+				double tex_pos = 0;  // Initial texture position
+				int tex_y = (int) tex_pos & (cub3d->textures[tex_num]->height - 1); // Use bitwise AND for wrap-around if height is power of 2
+				uint32_t color = get_pixel_color(cub3d->textures[tex_num], tex_x, tex_y);
+				mlx_put_pixel(cub3d->img, x, y, color);
+				tex_pos += step;
+			}
+			else if (y < start)
+				mlx_put_pixel(cub3d->img, x, y, 0x00FFFFFF);
+			else
+				mlx_put_pixel(cub3d->img, x, y, 0xFF000000);
+		}
+		tex_x = (int) (tex_x + delta_tex_x);
+	}
+}
+
+/* void draw_textured_wall(t_cub3d *cub3d, t_ray *ray)
 {
 	int x = ray->index * (cub3d->width / FOV);
 
@@ -278,7 +336,7 @@ void draw_textured_wall(t_cub3d *cub3d, t_ray *ray)
         uint32_t color = cub3d->textures[ray->side].data[texHeight * texY + texX];
 		mlx_put_pixel(cub3d->img, x, y, color);
     }
-}
+} */
 
 
 void	fov_cast(void *ptr)
@@ -290,12 +348,13 @@ void	fov_cast(void *ptr)
 	double curr_dir = deg_to_rad(-FOV / 2);
 	while (curr_dir < deg_to_rad(FOV / 2))
 	{
-		ray.index++;
 		ray.angle = cub3d->P->dir + curr_dir;
 		ray.dir = angle_to_vec(cub3d->P->dir + curr_dir);
 		raycast(cub3d, &ray);
-		//draw_view(cub3d, &ray);
-		draw_textured_wall(cub3d, &ray);
+		//check_get_pixel(cub3d->img, cub3d->textures[0]);
+		draw_view(cub3d, &ray);
+		//draw_textured_wall(cub3d, &ray);
 		curr_dir += deg_to_rad(1);
+		ray.index++;
 	}
 }
