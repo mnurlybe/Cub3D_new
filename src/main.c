@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:39 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/18 18:15:53 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/18 19:18:46 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int main(int argc, char **argv)
         game = parse_file(argv[1]);
         if (!game)
             write(1, "Error in file\n", 15); // add proper error message
-        // else
-        //     ft_cub3d(game);
+        else
+            ft_cub3d(game);
     }
     else
         write(1, "Error\n", 6); // add proper error message
