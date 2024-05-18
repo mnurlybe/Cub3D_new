@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:39 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/18 18:02:00 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/18 18:15:53 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ int main(int argc, char **argv)
     }
     else
         write(1, "Error\n", 6); // add proper error message
-    // for (size_t i = 0; i < game->file_size; i++)
-    //     printf("%s\n", game->split_file[i]);
     free_game(game);
     return (0);
 }

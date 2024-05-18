@@ -41,6 +41,13 @@ t_file *parse_file(char *file)
     }
     init_info(info);
     line = get_next_line(info->fd);
+    if (!line)
+    {
+        free(line);
+        close(info->fd);
+        free(info);
+        return (NULL); // add proper error message
+    }
     temp = ft_strdup(line);
     i = 1;
     while (line)
