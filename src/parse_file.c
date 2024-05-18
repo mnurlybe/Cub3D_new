@@ -30,7 +30,6 @@ t_file *parse_file(char *file)
     char *line;
     char *temp;
     int i;
-
     info = malloc(sizeof(t_file));
     if (!info)
         return (NULL); // add proper error message
@@ -64,8 +63,18 @@ t_file *parse_file(char *file)
     close(info->fd);
     free(temp);
     // ADD FULL FILE PARSE AND CHECKS HERE BEFORE COPYINT THE MAP
-    check_file(info);
+    if (!check_file(info))
+    {
+        free_textures(info);
+        free_array(info->split_file);
+        free(info);
+        return (NULL); // add proper error message
+    } 
     // copy full map from split_file to map
-    get_map(info);
+    // for (size_t j = 0; j < info->file_size; j++)
+    // {
+    //     printf("%s\n", info->split_file[j]);
+    // }
+    // get_map(info);
     return (info);
 }

@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:31 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/17 21:37:57 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/18 18:13:01 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,41 +29,26 @@ void free_program(t_cub3d *cub3d)
 
 void free_textures(t_file *game)
 {
-    int i;
-    i = 0;
-    while (i < 2)
-    {
-        free(game->no[i]);
-        free(game->so[i]);
-        free(game->we[i]);
-        free(game->ea[i]);
-        i++;
-    }
-    free(game->no);
-    free(game->so);
-    free(game->we);
-    free(game->ea);
+    if (game->no != NULL)
+        free_array(game->no);
+    if (game->so != NULL)
+        free_array(game->so);
+    if (game->we != NULL)
+        free_array(game->we);
+    if (game->ea != NULL)
+        free_array(game->ea);
 }
 
 
 void free_game(t_file *game)
 {
-    int i;
-    i = 0;
+    if (!game)
+        return ;
     free_textures(game);
-    while(game->split_file[i])
-    {
-        free(game->split_file[i]);
-        i++;
-    }
-    free(game->split_file);
-    i = 0;
-    while(game->map[i])
-    {
-        free(game->map[i]);
-        i++;
-    }
-    free(game->map);
+    if (game->split_file != NULL)
+        free_array(game->split_file);
+    if (game->map != NULL)
+        free_array(game->map);
     free(game);
 }
 

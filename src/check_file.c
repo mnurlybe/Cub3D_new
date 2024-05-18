@@ -74,12 +74,30 @@ int parse_textures(t_file *info)
 
 int check_floor_ceiling(char **floor, char **ceiling)
 {
-    if (!floor || !ceiling) // if some textures are missing
+    if (!floor && !ceiling) // if some textures are missing
         return (0);
+    if (!floor)
+    {
+        free_array(ceiling);
+        return (0);
+    }
+    if (!ceiling)
+    {
+        free_array(floor);
+        return (0);
+    }
     if (array_len(floor) != 2 || array_len(ceiling) != 2) // if there are more than 2 elem in the textures
+    {
+        free_array(floor);
+        free_array(ceiling);
         return (0);
+    }
     if (ft_strlen(floor[0]) != 1 || ft_strlen(ceiling[0]) != 1)
+    {
+        free_array(floor);
+        free_array(ceiling);
         return (0);
+    }
     return (1);
 }
 
@@ -117,6 +135,8 @@ int parse_floor_ceiling(t_file *info)
     char **floor;
     char **ceiling;
 
+    floor = NULL;
+    ceiling = NULL;
     i = 0;
     while (i < info->map_start_index)
     {
@@ -128,7 +148,9 @@ int parse_floor_ceiling(t_file *info)
     }
     // print_floor_ceiling(floor); // for debugging, to be removed
     // print_floor_ceiling(ceiling); // for debugging, to be removed
-    if (!check_floor_ceiling(floor, ceiling) || !parse_rgb(floor[1], ceiling[1], info))
+    if (!check_floor_ceiling(floor, ceiling))
+        return (0);
+    if (!parse_rgb(floor[1], ceiling[1], info))
     {
         free_array(floor);
         free_array(ceiling);
@@ -166,25 +188,25 @@ int check_file(t_file *info)
     if (!get_map_indexes(info))
     {
         printf("map not found\n");
-        return (1); // add proper error messagme - start and end index of map not found
+        return (0); // add proper error messagme - start and end index of map not found
     }
     // check if NO, SO, WE, and EA are correct and assign it to the t_file struct.
     if (!parse_textures(info))
     {
         printf("textures: error\n");
-        return (1); // add proper error message - textures not found
+        return (0); // add proper error message - textures not found
     }
     // check if the floor and ceiling are correct and assign it to the t_file struct.
     if (!parse_floor_ceiling(info))
     {
         printf("floor and ceiling: error\n");
-        return (1); // add proper error message - floor and ceiling not found
+        return (0); // add proper error message - floor and ceiling not found
     }
     // check if the map is correct and assign it to the t_file struct.
     if (!check_map(info))
     {
         printf("map: error\n");
-        return (1); // add proper error message - map not found
+        return (0); // add proper error message - map not found
     }
-    return (0);
+    return (1);
 }

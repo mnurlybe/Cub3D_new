@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/17 21:58:07 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/18 18:13:43 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void handle_movement(void *ptr);
 void free_program(t_cub3d *cub3d);
 void free_game(t_file *game);
 void free_array(char **arr);
+void free_textures(t_file *game);
 
 // parse_file.c
 t_file *parse_file(char *file);
