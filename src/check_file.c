@@ -161,6 +161,37 @@ int parse_floor_ceiling(t_file *info)
     return (1);
 }
 
+int validate_borders(char *line, size_t end_index)
+{
+    size_t i;
+    i = 0;
+    while (line[i])
+    {
+        if (line[i] == ' ')
+        {
+            i++;
+            continue;
+        }
+        if (line[i] != '1')
+            return (0);
+        if (line[i] == '1')
+            break;
+    }
+    while (line[end_index])
+    {
+        if (line[end_index] == ' ')
+        {
+            end_index--;
+            continue;
+        }
+        if (line[end_index] != '1')
+            return (0);
+        if (line[end_index] == '1')
+            break;
+    }
+    return (1);
+}
+
 int check_map(t_file *info)
 {
     size_t i;
@@ -177,6 +208,14 @@ int check_map(t_file *info)
     while (i < info->file_size)
     {
         if (!is_only_whitespace(info->split_file[i]))
+            return (0);
+        i++;
+    }
+    i = info->map_start_index;
+    // check if map is surrounded by 1s
+    while ((int)i <= info->map_end_index)
+    {
+        if (!validate_borders(info->split_file[i], ft_strlen(info->split_file[i]) - 1))
             return (0);
         i++;
     }

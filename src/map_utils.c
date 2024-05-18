@@ -1,31 +1,29 @@
 #include "../includes/cub3d.h"
 
-/**
- * before this function there will be an error management function 
- * to check if the map is valid, 
- * but now to keep it simple I pass only valid maps.
- * */ 
 // copy or dup char ** game->split_file to char ** game->map
-void get_map(t_file *file)
+int get_map(t_file *file)
 {
     char *temp;
     int i;
     // check if map is valid - function placeholder
     temp = ft_strdup("");
-    i = 0;
-    while (file->split_file[i])
+    i = file->map_start_index;
+    while (i <= file->map_end_index)
     {
         temp = ft_strjoin(temp, file->split_file[i]);
         temp = ft_strjoin(temp, "\n");
         i++;
     }
     file->map = ft_split(temp, '\n');
-    file->map_h_tiles = i;
+    file->map_h_tiles = file->map_end_index - file->map_start_index + 1;
     file->map_w_tiles = ft_strlen(file->map[0]);
+    printf("map_h_tiles: %ld\n", file->map_h_tiles);
+    printf("map_w_tiles: %ld\n", file->map_w_tiles);
     // print map --> remove this before submitting
-    // for (int i = 0; file->map[i]; i++)
-    //     printf("%s\n", file->map[i]);
+    for (int j = 0; file->map[j]; j++)
+        printf("{%s}\n", file->map[j]);
     free(temp);
+    return (1);
 }
 
 // convert char ** game_data->map to int ** minimap->map

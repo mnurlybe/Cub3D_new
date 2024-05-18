@@ -1,18 +1,12 @@
 # Cub3D
 
-
-file error management: 
-1. 
-
-
 map error management:
 1. Find start and end index; -> check_file.c -> done
-2. No empty lines, otherwise error; -> check_file.c
-3. Check if all the border = 1; -> get_map
-4. Check if there are no invalid characters; -> check_File.c
-5. Update empty spaces to 1; -> get_map
-6. Check if map is the last in the file. ->check_file.c
-No info should follow after the map.
+2. No empty lines, otherwise error; -> check_file.c -> done
+3. Check if there are no invalid characters; -> check_File.c -> done
+4. Check if map is the last in the file, no info should follow after the map. ->check_file.c -> done
+5. Check if all the border = 1; -> check_File.c -> done
+6. Update empty spaces to 1; -> get_map
 
 
 Plan for 01.05.2024:

@@ -6,7 +6,7 @@
 /*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/18 18:13:43 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/18 18:54:07 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int is_num(char *str);
 int is_only_allowed_chars(char *str);
 
 // map_utils.c
-void get_map(t_file *game);
+int get_map(t_file *game);
 void    copy_map(t_file *game_data, t_minimap *minimap);
 
 // player_utils.c

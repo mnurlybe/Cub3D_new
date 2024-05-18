@@ -69,7 +69,7 @@ t_file *parse_file(char *file)
     info->file_size = i;
     close(info->fd);
     free(temp);
-    // ADD FULL FILE PARSE AND CHECKS HERE BEFORE COPYINT THE MAP
+    // FULL FILE PARSE AND CHECKS HERE BEFORE
     if (!check_file(info))
     {
         free_textures(info);
@@ -78,10 +78,6 @@ t_file *parse_file(char *file)
         return (NULL); // add proper error message
     } 
     // copy full map from split_file to map
-    // for (size_t j = 0; j < info->file_size; j++)
-    // {
-    //     printf("%s\n", info->split_file[j]);
-    // }
-    // get_map(info);
+    get_map(info);
     return (info);
 }
