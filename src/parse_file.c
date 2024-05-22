@@ -54,8 +54,8 @@ t_file *parse_file(char *file)
     info->texture_paths = malloc(sizeof(char *) * 5);
     if (!info->texture_paths)
         return (NULL); // add proper error message
-    info->texture_paths[NORTH] = ft_strdup("./textures/redbrick.png");
-    info->texture_paths[SOUTH] = ft_strdup("./textures/bluestone.png");
+    info->texture_paths[NORTH] = ft_strdup("./textures/brickwall2.png");
+    info->texture_paths[SOUTH] = ft_strdup("./textures/colorstone.png");
     info->texture_paths[WEST] = ft_strdup("./textures/greystone.png");
     info->texture_paths[EAST] = ft_strdup("./textures/mossy.png");
     info->texture_paths[4] = NULL;

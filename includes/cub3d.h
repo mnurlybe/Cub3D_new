@@ -16,9 +16,9 @@
 # include "libs.h"
 
 // define constants
-# define FOV 60
-# define PLAYER_SPEED 0.05
-# define PLAYER_ROT_SPEED 0.005
+# define FOV 64
+# define PLAYER_SPEED 0.09
+# define PLAYER_ROT_SPEED 0.009
 # define PLAYER_SIZE 6
 # define MINIMAP_SCALE 1.0
 # define TILE_SIZE 4
@@ -201,6 +201,16 @@ void    copy_map(t_file *game_data, t_minimap *minimap);
 
 // player_utils.c
 char set_player_position(t_file *game_data, t_cub3d *cub3d);
+
+
+// raycasting_debugging_utils.c
+
+void draw_cross(mlx_image_t *img, int x, int y, int size, int color);
+void draw_rotated_cross(mlx_image_t *img, int x, int y, int size, int thickness, int color);
+void draw_circle_trig(mlx_image_t *img, int center_x, int center_y, int radius, int thickness, int color);
+int nearest_int(double value);
+void draw_line2(mlx_image_t *img, double x1, double y1, double x2, double y2, int color);
+int nearest_x_or_y(double value, int max_value);
 
 // utils.c
 

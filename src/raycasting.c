@@ -15,34 +15,15 @@
 #include <float.h>
 #include <stdbool.h>
 
-//how to cast a ray properly into a specific direction?
-// What kind of consts do I need? What structures do I need?
-
-//Applying the DDA (Digital Differential Analysis) Algorithm
-//to determing if the ray hit a border
-
-//Changes I would like to introduce:
-// 1. I would like to have a struct that holds the player position as vector
-// 2. The player position should be a integer value
-// 3. The player direction should be a float value (Maybe not needed anymore)
-// 4. FOV should be in radient value
-// 5. We should also include .d files so that we can recompile the project whent he header files change
-// 6. The player movement should not be dependent on the frame rate or the refresh rate of the screen
-
-
-// TODO: Implement edge case when the ray is vertical or horizontal
-// TODO: Improve structure of the code
+// TODO Clean up the coordinates
+//@
 // TODO: Deleted unnecessary lines and comments
 // TODO: Improve 3D rendering
-//			- Implement rendring of different textures
 //			- Implement rendering of sprites
 //			- Implement rendering of the floor and ceiling
 //			- Implement rendering of the skybox
 //			- Implement rendering of the HUD
 //			- Implement rendering of the minimap
-
-// TODO: 
-
 
 # define deg_to_rad(angle) (angle * M_PI / 180)
 # define rad_to_deg(radient) (radient * 180 / M_PI)
@@ -194,7 +175,7 @@ void	raycast(t_cub3d *cub3d, t_ray *ray)
 		else
 		{
 			map_y += step_y;
-			ray->wall = cub3d->minimap->map[map_y][map_x];
+      ray->wall = cub3d->minimap->map[map_y][map_x];
 			if (ray->wall > 0)
 			{
 				if (dir.y < 0)
@@ -206,59 +187,53 @@ void	raycast(t_cub3d *cub3d, t_ray *ray)
 			side_dist.y += delta_dist_y * TILE_SIZE;
 		}
 	}
-	draw_line2(cub3d->img, p.x, p.y, x, y, 0x00FF0000);
+	//draw_line2(cub3d->img, p.x, p.y, x, y, 0x00FF0000);
 	ray->wall_hit.x = x;
 	ray->wall_hit.y = y;
 	ray->distance = ((side_dist.x < side_dist.y && side_dist.x > 1e-10) || side_dist.y < 1e-10) ? side_dist.x : side_dist.y;
 	ray->distance *= cos(cub3d->P->dir - ray->angle);
 }
 
-/* void draw_view(t_cub3d *cub3d, t_ray *ray)
-{
-	int min_x = ray->index * (cub3d->width / FOV);
-	int max_x = (ray->index + 1) * (cub3d->width / FOV);
-	int curr_color;
-	if (ray->side == NORTH)
-		curr_color = GREEN;
-	else if (ray->side == SOUTH)
-		curr_color = BLUE;
-	else if (ray->side == WEST)
-		curr_color = RED;
-	else if (ray->side == EAST)
-		curr_color = YELLOW;
-	int current_height = (int) (cub3d->height / ray->distance);
-	int start = (cub3d->height - current_height) / 2;
-	int end = start + current_height;
-	for (int x = min_x; x < max_x; x++)
-	{
-		for (int y = 0; y < (int) cub3d->height; y++)
-		{
-			if (y >= start && y <= end)
-			{
-				mlx_put_pixel(cub3d->img, x, y, curr_color);
-			}
-			else if (y < start)
-				mlx_put_pixel(cub3d->img, x, y, 0x00FFFFFF);
-			else
-				mlx_put_pixel(cub3d->img, x, y, 0xFF000000);
-		}
-	}
-}
- */
 uint32_t get_pixel_color(mlx_texture_t *texture, int x, int y)
 {
 	uint32_t *pixels = (uint32_t *)texture->pixels;
 	return (pixels[y * texture->width + x]);
 }
 
-void check_get_pixel(mlx_image_t *img, mlx_texture_t *texture)
-{
-	for (int x = 0; x < (int)texture->width; x++) {
-		for (int y = 0; y < (int)texture->height; y++) {
-			uint32_t color = get_pixel_color(texture, x, y);
-			mlx_put_pixel(img, x, y, color);
-		}
-	}
+uint32_t interpolate_colors(uint32_t c1, uint32_t c2, double alpha) {
+    uint8_t r = (uint8_t)((1 - alpha) * ((c1 >> 16) & 0xFF) + alpha * ((c2 >> 16) & 0xFF));
+    uint8_t g = (uint8_t)((1 - alpha) * ((c1 >> 8) & 0xFF) + alpha * ((c2 >> 8) & 0xFF));
+    uint8_t b = (uint8_t)((1 - alpha) * (c1 & 0xFF) + alpha * (c2 & 0xFF));
+    return (r << 16) | (g << 8) | b;
+}
+
+uint32_t texture_sample_bilinear(mlx_texture_t *tex, double u, double v) {
+    // Convert fractional texture coordinates to texel indices
+    double tx = u * tex->width - 0.5;
+    double ty = v * tex->height - 0.5;
+
+    // Determine texel indices surrounding the point
+    int x1 = (int)floor(tx);
+    int y1 = (int)floor(ty);
+    int x2 = (x1 + 1) % tex->width;
+    int y2 = (y1 + 1) % tex->height;
+
+    // Calculate fractional parts of u and v
+    double fx = tx - floor(tx);
+    double fy = ty - floor(ty);
+
+    // Fetch four texels
+    uint32_t c11 = tex->pixels[y1 * tex->width + x1];
+    uint32_t c21 = tex->pixels[y1 * tex->width + x2];
+    uint32_t c12 = tex->pixels[y2 * tex->width + x1];
+    uint32_t c22 = tex->pixels[y2 * tex->width + x2];
+
+    // Interpolate between the colors
+    uint32_t interp1 = interpolate_colors(c11, c21, fx);
+    uint32_t interp2 = interpolate_colors(c12, c22, fx);
+    uint32_t finalColor = interpolate_colors(interp1, interp2, fy);
+
+    return finalColor;
 }
 
 void draw_view(t_cub3d *cub3d, t_ray *ray)
@@ -270,74 +245,33 @@ void draw_view(t_cub3d *cub3d, t_ray *ray)
 	int end = start + delta_height;
 
 	int tex_num = ray->side;
+	// Calculate exact position on the wall texture
+	double wallHitX = cub3d->P->pos.x + ray->distance * cos(ray->angle); // Use cosine to adjust for fisheye effect
+	double wallHitY = cub3d->P->pos.y + ray->distance * sin(ray->angle);
 
-	double delta_tex_x = ray->distance * tan(deg_to_rad(1));
-	fabs(ray->angle - cub3d->P->dir) < 1e-4 ? printf("delta_tex_x: %f\n", delta_tex_x) : 0;
-	int tex_x;
-	if (ray->side == NORTH || ray->side == SOUTH)
-		tex_x = (int) (ray->wall_hit.x) % cub3d->textures[tex_num]->width;
-	else if (ray->side == EAST || ray->side == WEST)
-		tex_x = (int) (ray->wall_hit.y) % cub3d->textures[tex_num]->width;
+	// Correct texture coordinates based on wall side
+	double wallX = (ray->side == NORTH || ray->side == SOUTH) ? wallHitX : wallHitY;
+	wallX -= floor(wallX);
+	int texX = (int)(wallX * (double)cub3d->textures[tex_num]->width);
 	for (int x = min_x; x < max_x; x++)
 	{
-		fabs(ray->angle - cub3d->P->dir) < 1e-4 ? printf("tex_x: %d\n", tex_x) : 0;
 		for (int y = 0; y < (int) cub3d->height; y++)
 		{
 			if (y >= start && y <= end)
 			{
-				double step = (double) cub3d->textures[tex_num]->height / delta_height;
-				double tex_pos = 0;  // Initial texture position
-				int tex_y = (int) tex_pos & (cub3d->textures[tex_num]->height - 1); // Use bitwise AND for wrap-around if height is power of 2
-				uint32_t color = get_pixel_color(cub3d->textures[tex_num], tex_x, tex_y);
-				mlx_put_pixel(cub3d->img, x, y, color);
-				tex_pos += step;
+			    int texY = ((y - start) * cub3d->textures[tex_num]->height) / delta_height;
+			    texY = texY % cub3d->textures[tex_num]->height;  // Handle wrapping
+			    //uint32_t color = texture_sample_bilinear(cub3d->textures[tex_num], texX, texY);
+			    uint32_t color = get_pixel_color(cub3d->textures[tex_num], texX, texY);
+			    mlx_put_pixel(cub3d->img, x, y, color);
 			}
 			else if (y < start)
 				mlx_put_pixel(cub3d->img, x, y, 0x00FFFFFF);
 			else
 				mlx_put_pixel(cub3d->img, x, y, 0xFF000000);
 		}
-		tex_x = (int) (tex_x + delta_tex_x);
 	}
 }
-
-/* void draw_textured_wall(t_cub3d *cub3d, t_ray *ray)
-{
-	int x = ray->index * (cub3d->width / FOV);
-
-    // Calculate width and height of the texture
-    int texWidth = cub3d->textures[ray->side].width;
-    int texHeight = cub3d->textures[ray->side].height;
-
-    // Calculate value of wallX
-    double wallX; // Where exactly the wall was hit
-    if (ray->side == 0 || ray->side == 1)
-        wallX = cub3d->P->pos.x + ray->distance * ray->dir.x;
-    else
-        wallX = cub3d->P->pos.y + ray->distance * ray->dir.y;
-    wallX -= floor(wallX);
-
-    // X coordinate on the texture
-    int texX = (int)(wallX * (double)texWidth);
-	if ((ray->side == 0 && ray->dir.x > 0) || (ray->side == 1 && ray->dir.x < 0))
-		texX = texWidth - texX - 1;
-	int line_height = (int)(cub3d->height / ray->distance);
-    // How much to increase the texture coordinate per screen pixel
-    double step = 1.0 * texHeight / line_height;
-    // Starting texture coordinate
-	double draw_start = -line_height / 2 + cub3d->height / 2;
-    double texPos = (draw_start - cub3d->height / 2 + line_height / 2) * step;
-	double draw_end = line_height / 2 + cub3d->height / 2;
-    for(int y = draw_start; y < draw_end; y++)
-    {
-        // Cast the texture coordinate to an integer, and mask with (texHeight - 1) in case of overflow
-        int texY = (int)texPos & (texHeight - 1);
-        texPos += step;
-        uint32_t color = cub3d->textures[ray->side].data[texHeight * texY + texX];
-		mlx_put_pixel(cub3d->img, x, y, color);
-    }
-} */
-
 
 void	fov_cast(void *ptr)
 {

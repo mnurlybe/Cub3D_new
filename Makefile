@@ -16,7 +16,6 @@ MY_HEADER = ./includes/
 
 OBJ_DIR = obj
 
-
 all:  libft42 $(NAME)
 
 libft42:
@@ -24,17 +23,24 @@ libft42:
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 	
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(SOURCES:$(SRC_DIR)/%.c=%.o))
+DEPS = $(OBJECTS:.o=.d)
+
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@gcc $(CFLAGS) -MMD -g -I $(MY_HEADER) -c $< -o $@
+	@gcc $(CFLAGS) -I $(MY_HEADER) -c $< -o $@
 	@echo -n "Compiling src... $<\r"
 
 $(NAME): $(OBJECTS)
-	@gcc $(CFLAGS) -MMD -g -o $(NAME) $(OBJECTS) $(MXL) $(LIBFLAGS) $(MLXFLAGS)
+	@gcc $(CFLAGS) -MMD -o $(NAME) $(OBJECTS) $(MXL) $(LIBFLAGS) $(MLXFLAGS)
+
+#include dependencies
+-include $(DEPS)
 
 $(OBJ_DIR):
 	@mkdir -p $(dir $(OBJECTS))
 
+debug: CLFAGS += -g
+debug: re
 
 clean:
 	@rm -rf $(OBJ_DIR)
