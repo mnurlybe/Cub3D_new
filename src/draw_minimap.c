@@ -89,8 +89,8 @@ void draw_line(mlx_image_t *img, double x1, double y1, double x2, double y2, int
 
 void draw_player_direction(t_cub3d *cub3d)
 {
-    double x = cub3d->P->pos.x + cos(cub3d->P->dir) * PLAYER_SIZE;
-    double y = cub3d->P->pos.y + sin(cub3d->P->dir) * PLAYER_SIZE;
+    double x = cub3d->P->pos.x + cos(cub3d->P->angle) * PLAYER_SIZE;
+    double y = cub3d->P->pos.y + sin(cub3d->P->angle) * PLAYER_SIZE;
     draw_line(cub3d->img, cub3d->P->pos.x, cub3d->P->pos.y, x, y, PLAYER_COLOR); //black
 }
 

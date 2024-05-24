@@ -18,15 +18,12 @@
 // define constants
 # define FOV 64
 # define PLAYER_SPEED 0.09
-# define PLAYER_ROT_SPEED 0.009
+# define PLAYER_ROT_SPEED 0.015
 # define PLAYER_SIZE 6
 # define MINIMAP_SCALE 1.0
 # define TILE_SIZE 4
 # define M_PI 3.14159265358979323846
 # define M_PI_2 1.57079632679489661923
-
-# define TEXTURE_WIDTH 64
-# define TEXTURE_HEIGHT 64
 
 // Color codes
 # define RED		0xFF0000FF
@@ -56,6 +53,12 @@ typedef struct s_vec
 	double	y;
 }	t_vec;
 
+typedef struct s_vec_int
+{
+  int	x;
+  int	y;
+}	t_vec_int;
+
 typedef enum e_wallside
 {
 	NORTH,
@@ -68,12 +71,11 @@ typedef struct s_ray
 {
 	int			index;
 	t_vec		wall_hit;
-	double		angle;
 	t_vec		dir;
+	double		angle;
 	int			wall;
 	t_wallside	side;
 	double 		distance;
-	t_vec		prev_wall_hit;
 }	t_ray;
 
 /**
@@ -84,10 +86,10 @@ typedef struct s_ray
  */
 typedef struct s_player
 {
-    t_vec	pos;
-	t_vec	dir_vec;
-    double	dir;
-    double	fov;
+  t_vec   pos;
+	t_vec   dir;
+  double	angle;
+  double	fov;
 }				t_player;
 
 // minimap struct
@@ -119,6 +121,7 @@ typedef struct s_cub3d
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
+  mlx_image_t   *buf;
 	size_t			width;
 	size_t			height;
 	t_player		*P;
@@ -131,7 +134,7 @@ void draw_map(void *ptr);
 void draw_player(t_cub3d *cub3d);
 
 //cast field of view
-void	fov_cast(void *ptr);
+void	cast_fov(void *ptr);
 int		nearest_int(double x);
 
 // init.c
@@ -242,6 +245,8 @@ t_vec angle_to_vec(double angle);
  */
 t_vec	vec_add(t_vec a, t_vec b);
 
+t_vec_int	vec_int_add(t_vec_int a, t_vec_int b);
+
 /**
  * Subtracts two vectors.
  *
@@ -259,6 +264,8 @@ t_vec	vec_sub(t_vec a, t_vec b);
  * @return The scaled vector.
  */
 t_vec	vec_scal_m(t_vec a, double scalar);
+t_vec_int	vec_int_scal_m(t_vec a, double scalar);
+
 
 /**
  * Scales a vector by a scalar value (division).
@@ -268,6 +275,7 @@ t_vec	vec_scal_m(t_vec a, double scalar);
  * @return The scaled vector.
  */
 t_vec	vec_scal_d(t_vec a, double scalar);
+t_vec_int	vec_int_scal_d(t_vec a, double scalar);
 
 /**
  * Calculates the dot product of two vectors.
@@ -302,5 +310,9 @@ t_vec	vec_normalize(t_vec a);
  * @return The rotated vector.
  */
 t_vec	vec_rotate(t_vec a, double angle);
+
+typedef double (*vec_func)(double);
+
+t_vec vec_apply(t_vec a, vec_func f);
 
 #endif

@@ -6,16 +6,15 @@ void init_player(t_file *game_data, t_cub3d *cub3d)
 
     direction = set_player_position(game_data, cub3d);
     if (direction == 'N')
-        cub3d->P->dir = 1.5 * M_PI;
+        cub3d->P->angle = 1.5 * M_PI;
     else if (direction == 'S')
-        cub3d->P->dir = 0.5 * M_PI;
+        cub3d->P->angle = 0.5 * M_PI;
     else if (direction == 'E')
-        cub3d->P->dir = 0;
+        cub3d->P->angle = 0;
     else if (direction == 'W')
-        cub3d->P->dir = M_PI;
-    cub3d->P->dir = 0.5 * M_PI;
-    cub3d->P->dir_vec.x = cos(cub3d->P->dir);
-    cub3d->P->dir_vec.y = sin(cub3d->P->dir);
+        cub3d->P->angle = M_PI;
+    cub3d->P->angle = 0.5 * M_PI;
+    cub3d->P->dir = angle_to_vec(cub3d->P->angle);
     cub3d->P->fov = FOV;
 }
 
@@ -68,8 +67,8 @@ void    init_textures(t_file *game_data, t_cub3d *cub3d)
 // init cub3d struct
 void init(t_cub3d *cub3d, t_file *game_data)
 {
-    cub3d->width = 1024;
-    cub3d->height = 1024;
+    cub3d->width = 1920;
+    cub3d->height = 1080;
     cub3d->P = malloc(sizeof(t_player));
     if (!cub3d->P)
         return ; // add proper error message
