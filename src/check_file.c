@@ -144,7 +144,12 @@ int parse_floor_ceiling(t_file *info)
             floor = ft_split(info->split_file[i], ' ');
         else if (ft_strnstr(info->split_file[i], "C", ft_strlen(info->split_file[i])) != NULL)
             ceiling = ft_split(info->split_file[i], ' ');
-        i++;
+        i++; // check if NO, SO, WE, and EA are correct and assign it to the t_file struct.
+    if (!parse_textures(info))
+    {
+        printf("textures: error\n");
+        return (0); // add proper error message - textures not found
+    }
     }
     // print_floor_ceiling(floor); // for debugging, to be removed
     // print_floor_ceiling(ceiling); // for debugging, to be removed
@@ -224,6 +229,7 @@ int check_map(t_file *info)
 
 int check_file(t_file *info)
 {
+    // get start and end lines of the map in the file
     if (!get_map_indexes(info))
     {
         printf("map not found\n");
