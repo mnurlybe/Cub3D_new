@@ -44,6 +44,10 @@ char    *get_wall_side(int side)
         return ("EA");
     else if (side == WEST)
         return ("WE");
+    else if (side == FLOOR)
+      return ("F");
+    else if (side == CEILING)
+      return ("C");
     return ("");
 }
 

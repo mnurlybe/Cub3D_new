@@ -99,34 +99,47 @@ uint32_t get_pixel_color(mlx_texture_t *texture, int x, int y)
 	return (pixels[y * texture->width + x]);
 }
 
-void render_ray(t_cub3d *cub3d, t_ray *ray)
+void render_wall(t_cub3d *cub3d, t_ray *ray)
 {
 	int delta_height = (int) (cub3d->height / ray->distance);
 	int start = (cub3d->height - delta_height) / 2;
 	int end = start + delta_height;
 
 	int tex_num = ray->side;
-	// Calculate exact position on the wall texture
-  double wallHitX = ray->wall_hit.x;
-  double wallHitY = ray->wall_hit.y;
-
-	// Correct texture coordinates based on wall side
-	double wallX = (ray->side == NORTH || ray->side == SOUTH) ? wallHitX : wallHitY;
+	double wallX = (ray->side == NORTH || ray->side == SOUTH) ? ray->wall_hit.x : ray->wall_hit.y;
 	wallX -= floor(wallX);
 	int texX = (int)(wallX * (double)cub3d->textures[tex_num]->width);
-	for (int y = 0; y < (int) cub3d->height; y++)
+	for (int y = start; y < end; y++)
 	{
-		if (y >= start && y <= end)
-		{
-		    int texY = ((y - start) * cub3d->textures[tex_num]->height) / delta_height;
-		    texY = texY % cub3d->textures[tex_num]->height;  // Handle wrapping
-		    uint32_t color = get_pixel_color(cub3d->textures[tex_num], texX, texY);
-		    mlx_put_pixel(cub3d->buf, ray->index, y, color);
-		}
-		else if (y < start)
-			mlx_put_pixel(cub3d->buf, ray->index, y, 0x00FFFFFF);
-		else
-			mlx_put_pixel(cub3d->buf, ray->index, y, 0xFF000000);
+	   int texY = ((y - start) * cub3d->textures[tex_num]->height) / delta_height;
+		 texY = texY % cub3d->textures[tex_num]->height;  // Handle wrapping
+		 uint32_t color = get_pixel_color(cub3d->textures[tex_num], texX, texY);
+		 mlx_put_pixel(cub3d->buf, ray->index, y, color);
+  }
+}
+
+void render_ceiling_floor(t_cub3d *cub3d, double fov_rad)
+{
+  double pos_z = 0.5 * cub3d->height;
+  t_vec ray_min = angle_to_vec(cub3d->P->angle - fov_rad / 2);
+  t_vec ray_max = angle_to_vec(cub3d->P->angle + fov_rad / 2);
+  for (int y = 0; y < (int) cub3d->height; y++)
+  {
+    int p = y - cub3d->height / 2;
+    double row_distance = pos_z / p;
+    t_vec floor_step = vec_scal_d(vec_scal_m(vec_sub(ray_max, ray_min), row_distance), (double) cub3d->width);
+    t_vec floor = vec_add(cub3d->P->pos, vec_scal_m(ray_min, row_distance));
+    for (int x = 0; x < (int) cub3d->width; x++)
+    {
+      t_vec_int cell = {(int) floor.x, (int) floor.y};
+      int tx = (int) (cub3d->textures[FLOOR]->width * (floor.x - cell.x)) & (cub3d->textures[FLOOR]->width - 1);
+      int ty = (int) (cub3d->textures[FLOOR]->height * (floor.y - cell.y)) & (cub3d->textures[FLOOR]->height - 1);
+      uint32_t floor_color = get_pixel_color(cub3d->textures[FLOOR], tx, ty);
+      uint32_t ceiling_color = get_pixel_color(cub3d->textures[CEILING], tx, ty);
+      mlx_put_pixel(cub3d->buf, x, y, floor_color);
+      mlx_put_pixel(cub3d->buf, x, cub3d->height - y - 1, ceiling_color);
+      floor = vec_add(floor, floor_step);
+    }
   }
 }
 
@@ -140,12 +153,13 @@ void  cast_fov(void *ptr)
   double ray_inc = fov_rad / cub3d->width;
   cub3d = (t_cub3d *)ptr;
   ray.index = 0;
+  render_ceiling_floor(cub3d, fov_rad);
   while (ray.index < (int) cub3d->width)
   {
     ray.angle = cub3d->P->angle -  fov_rad / 2 + ray.index * ray_inc;
     ray.dir = angle_to_vec(ray.angle);
     cast_ray(cub3d, &ray);
-    render_ray(cub3d, &ray);
+    render_wall(cub3d, &ray);
     ray.index++;
   }
 }

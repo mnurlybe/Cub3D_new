@@ -65,6 +65,8 @@ typedef enum e_wallside
 	SOUTH,
 	WEST,
 	EAST,
+  FLOOR,
+  CEILING,
 }	t_wallside;
 
 typedef struct s_ray
@@ -109,8 +111,6 @@ typedef struct s_file
 	size_t 	file_size;
 	char 	**split_file;
 	char 	**texture_paths;
-	int		floor;
-	int		ceiling;
 	char	**map;
 	size_t  map_h_tiles;
 	size_t  map_w_tiles;
@@ -125,7 +125,7 @@ typedef struct s_cub3d
 	size_t			width;
 	size_t			height;
 	t_player		*P;
-	mlx_texture_t	*textures[4];
+	mlx_texture_t	*textures[6];
 	t_minimap		*minimap;
 }					t_cub3d;
 

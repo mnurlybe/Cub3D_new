@@ -51,13 +51,15 @@ t_file *parse_file(char *file)
     free(temp);
     // copy full map from split_file to map
     get_map(info);
-    info->texture_paths = malloc(sizeof(char *) * 5);
+    info->texture_paths = malloc(sizeof(char *) * 7);
     if (!info->texture_paths)
         return (NULL); // add proper error message
     info->texture_paths[NORTH] = ft_strdup("./textures/brickwall2.png");
-    info->texture_paths[SOUTH] = ft_strdup("./textures/colorstone.png");
-    info->texture_paths[WEST] = ft_strdup("./textures/greystone.png");
+    info->texture_paths[SOUTH] = ft_strdup("./textures/eagle.png");
+    info->texture_paths[WEST] = ft_strdup("./textures/purplestone.png");
     info->texture_paths[EAST] = ft_strdup("./textures/mossy.png");
-    info->texture_paths[4] = NULL;
+    info->texture_paths[FLOOR] = ft_strdup("./textures/greystone.png");
+    info->texture_paths[CEILING] = ft_strdup("./textures/wood.png");
+    info->texture_paths[6] = NULL;
     return (info);
 }
