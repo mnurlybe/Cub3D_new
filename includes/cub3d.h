@@ -16,7 +16,7 @@
 # include "libs.h"
 
 // define constants
-# define FOV 64
+# define FOV 60
 # define PLAYER_SPEED 0.09
 # define PLAYER_ROT_SPEED 0.015
 # define PLAYER_SIZE 6

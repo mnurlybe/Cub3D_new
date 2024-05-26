@@ -118,12 +118,37 @@ void render_wall(t_cub3d *cub3d, t_ray *ray)
   }
 }
 
+/**
+ * This function renders the floor and since the ceiling is symmetrical, 
+ * we can just use the same code to render the ceiling
+*  The rendering for the ceiling and floor is done before the walls. 
+*  And instead of rendering going vertil stripe by vertical stripe, we go row by row.
+*
+*  The formula for rowDistance, the horizontal distance from camera to the floor 
+*  for the current row, which is posZ / p with p the current pixel distance 
+*  from the screen center, can be explained as follows:
+*
+*  The camera ray goes through the following two points: the camera itself, 
+*  which is at a certain height (posZ), and a point in front of the camera 
+*  (through an imagined vertical plane containing the screen pixels) with 
+*  horizontal distance 1 from the camera, and vertical position p lower than 
+*  posZ (posZ - p). When going through that point, the line has vertically 
+*  traveled by p units and horizontally by 1 unit. To hit the floor, it instead needs
+*  to travel by posZ units. It will travel the same ratio horizontally. 
+*  The ratio was 1 / p for going through the camera plane, so to go posZ times 
+*  farther to reach the floor, we get that the total horizontal distance is posZ / p. 
+*
+ * @cub3d: A pointer to the t_cub3d structure containing all game and rendering context.
+ *        This includes player position, viewing angles, screen dimensions, textures, and more.
+ * @fov_rad: The field of view in radians, specifying the horizontal extent of the visible world.
+ */
 void render_ceiling_floor(t_cub3d *cub3d, double fov_rad)
 {
+  
   double pos_z = 0.5 * cub3d->height;
   t_vec ray_min = angle_to_vec(cub3d->P->angle - fov_rad / 2);
   t_vec ray_max = angle_to_vec(cub3d->P->angle + fov_rad / 2);
-  for (int y = 0; y < (int) cub3d->height; y++)
+  for (int y = (int) cub3d->height / 2; y < (int) cub3d->height; y++)
   {
     int p = y - cub3d->height / 2;
     double row_distance = pos_z / p;
@@ -137,6 +162,8 @@ void render_ceiling_floor(t_cub3d *cub3d, double fov_rad)
       uint32_t floor_color = get_pixel_color(cub3d->textures[FLOOR], tx, ty);
       uint32_t ceiling_color = get_pixel_color(cub3d->textures[CEILING], tx, ty);
       mlx_put_pixel(cub3d->buf, x, y, floor_color);
+      if (cub3d->height - y - 1 < 0 || cub3d->height - y - 1 >= cub3d->height)
+        printf("(% d | %d) %d\n", x , (int) cub3d->height - y - 1);
       mlx_put_pixel(cub3d->buf, x, cub3d->height - y - 1, ceiling_color);
       floor = vec_add(floor, floor_step);
     }
