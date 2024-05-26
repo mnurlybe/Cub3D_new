@@ -1,243 +1,192 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   raycasting.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/26 11:52:40 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/03 18:42:29 by mnurlybe         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/cub3d.h"
 #include <math.h>
 #include <float.h>
 #include <stdbool.h>
 
-//how to cast a ray properly into a specific direction?
-// What kind of consts do I need? What structures do I need?
-
-//Applying the DDA (Digital Differential Analysis) Algorithm
-//to determing if the ray hit a border
-
-//Changes I would like to introduce:
-// 1. I would like to have a struct that holds the player position as vector
-// 2. The player position should be a integer value
-// 3. The player direction should be a float value (Maybe not needed anymore)
-// 4. FOV should be in radient value
-// 5. We should also include .d files so that we can recompile the project whent he header files change
-// 6. The player movement should not be dependent on the frame rate or the refresh rate of the screen
-
-
-// TODO: Implement edge case when the ray is vertical or horizontal
-// TODO: Improve structure of the code
-// TODO: Deleted unnecessary lines and comments
-// TODO: Improve 3D rendering
-//			- Implement rendring of different textures
-//			- Implement rendering of sprites
-//			- Implement rendering of the floor and ceiling
-//			- Implement rendering of the skybox
-//			- Implement rendering of the HUD
-//			- Implement rendering of the minimap
-
-// TODO: 
-
-
-# define deg_to_rad(angle) (angle * M_PI / 180)
-# define rad_to_deg(radient) (radient * 180 / M_PI)
-
-#define ORANGE 0xFFFFA500
-#define TURQUOISE 0xFF40E0D0
-
-void draw_cross(mlx_image_t *img, int x, int y, int size, int color)
+double  deg_to_rad(double angle)
 {
-	for (int i = -size; i <= size; i++)
-	{
-		if (x + i >= 0 && x + i < (int)img->width)
-		{
-			mlx_put_pixel(img, x + i, y, color);
-		}
-		if (y + i >= 0 && y + i < (int)img->height)
-		{
-			mlx_put_pixel(img, x, y + i, color);
-		}
-	}
+  return (angle * M_PI / 180);
 }
 
-void draw_rotated_cross(mlx_image_t *img, int x, int y, int size, int thickness, int color) {
-    for (int i = -size; i <= size; i++) {
-        for (int j = -thickness; j <= thickness; j++) {
-            // Diagonal 1 (\)
-            int xi = x + i + j;
-            int yi = y + i + j;
-            if (xi >= 0 && (uint32_t)xi < img->width && yi >= 0 && (uint32_t)yi < img->height) {
-                mlx_put_pixel(img, xi, yi, color);
-            }
+int is_zero(double value)
+{
+  return (fabs(value) < 1e-10);
+}
 
-            // Diagonal 2 (/)
-            xi = x + i - j;
-            yi = y - i + j;
-            if (xi >= 0 && (uint32_t)xi < img->width && yi >= 0 && (uint32_t)yi < img->height) {
-                mlx_put_pixel(img, xi, yi, color);
-            }
-        }
+void calculate_initial_offset(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist, t_vec_int map,t_vec *offset)
+{
+  t_vec p;
+
+  p = cub3d->P->pos;
+  if (ray->dir.x < 0)
+    offset->x = (p.x - map.x * TILE_SIZE) * delta_dist.x;
+  else
+    offset->x = ((map.x + 1) * TILE_SIZE - p.x) * delta_dist.x;
+  if (ray->dir.y < 0)
+    offset->y = (p.y - map.y * TILE_SIZE) * delta_dist.y;
+  else
+    offset->y = ((map.y + 1) * TILE_SIZE - p.y) * delta_dist.y;
+}
+
+bool vertical_gridline_hit(t_vec *d)
+{
+  return ((d->x < d->y && !is_zero(d->x)) || is_zero(d->y));
+}
+
+int  is_tile_wall(t_cub3d *cub3d, t_ray *ray, t_vec_int map, int wall_type)
+{
+  ray->wall = cub3d->minimap->map[map.y][map.x];
+  if (ray->wall == 0)
+    return (ray->wall);
+  if (wall_type == 1)
+  {
+    if (ray->dir.x > 0)
+      ray->side = EAST;
+    else
+      ray->side = WEST;
+  }
+  else if (wall_type == 0)
+  {
+    if (ray->dir.y > 0)
+      ray->side = SOUTH;
+    else
+      ray->side = NORTH;
+  }
+  return (ray->wall);
+}
+
+void  dda(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist, t_vec_int map, t_vec *distance)
+{
+  t_vec_int step = {(ray->dir.x < 0) ? -1 : 1, (ray->dir.y < 0) ? -1 : 1};
+  while (true)
+  {
+    if (vertical_gridline_hit(distance))
+    {
+      map.x += step.x;
+      if (is_tile_wall(cub3d, ray, map, 1))
+        break;
+      distance->x += delta_dist.x * TILE_SIZE;
     }
-}
-
-void draw_circle_trig(mlx_image_t *img, int center_x, int center_y, int radius, int thickness, int color) {
-    for (int r = radius - thickness; r <= radius + thickness; r++) {
-        for (int theta = 0; theta < 360; theta++) {
-            int x = center_x + r * cos(theta * M_PI / 180.0);
-            int y = center_y + r * sin(theta * M_PI / 180.0);
-
-            if (x >= 0 && (uint32_t)x < img->width && y >= 0 && (uint32_t)y < img->height) {
-                mlx_put_pixel(img, x, y, color);
-            }
-        }
+    else
+    {
+      map.y += step.y;
+      if (is_tile_wall(cub3d, ray, map, 0))
+        break;
+      distance->y += delta_dist.y * TILE_SIZE;
     }
+  }
 }
 
-void draw_line2(mlx_image_t *img, double x1, double y1, double x2, double y2, int color) {
-    int dx = (int)(x2 - x1);
-    int dy = (int)(y2 - y1);
-    int steps = (abs(dx) > abs(dy)) ? abs(dx) : abs(dy); // Choose maximum of dx or dy for steps
+void cast_ray(t_cub3d *cub3d, t_ray *ray)
+{
+  t_vec delta_dist = {fabs(1 / ray->dir.x), fabs(1 / ray->dir.y)};
+  t_vec distance;
 
-    double xinc = dx / (double)steps;
-    double yinc = dy / (double)steps;
+  t_vec_int map = {cub3d->P->pos.x / TILE_SIZE, cub3d->P->pos.y / TILE_SIZE};
+  calculate_initial_offset(cub3d, ray, delta_dist, map, &distance);
+  dda(cub3d, ray, delta_dist, map, &distance);
+  if (vertical_gridline_hit(&distance))
+    ray->distance = distance.x;
+  else
+    ray->distance = distance.y;
+  ray->distance *= cos(cub3d->P->angle - ray->angle);
+  ray->wall_hit = vec_add(cub3d->P->pos, vec_scal_m(ray->dir, ray->distance));
+}
 
-    double x = x1;
-    double y = y1;
+uint32_t get_pixel_color(mlx_texture_t *texture, int x, int y)
+{
+	uint32_t *pixels = (uint32_t *)texture->pixels;
+	return (pixels[y * texture->width + x]);
+}
 
-    for (int i = 0; i <= steps; i++) { // Iterate up to and including steps
-        mlx_put_pixel(img, (int)(x + 0.5), (int)(y + 0.5), color); // Use rounding to nearest integer
-        x += xinc;
-        y += yinc;
+void render_wall(t_cub3d *cub3d, t_ray *ray)
+{
+	int delta_height = (int) (cub3d->height / ray->distance);
+	int start = (cub3d->height - delta_height) / 2;
+	int end = start + delta_height;
+
+	int tex_num = ray->side;
+	double wallX = (ray->side == NORTH || ray->side == SOUTH) ? ray->wall_hit.x : ray->wall_hit.y;
+	wallX -= floor(wallX);
+	int texX = (int)(wallX * (double)cub3d->textures[tex_num]->width);
+	for (int y = start; y < end; y++)
+	{
+	   int texY = ((y - start) * cub3d->textures[tex_num]->height) / delta_height;
+		 texY = texY % cub3d->textures[tex_num]->height;  // Handle wrapping
+		 uint32_t color = get_pixel_color(cub3d->textures[tex_num], texX, texY);
+		 mlx_put_pixel(cub3d->buf, ray->index, y, color);
+  }
+}
+
+/**
+ * This function renders the floor and since the ceiling is symmetrical, 
+ * we can just use the same code to render the ceiling
+*  The rendering for the ceiling and floor is done before the walls. 
+*  And instead of rendering going vertil stripe by vertical stripe, we go row by row.
+*
+*  The formula for rowDistance, the horizontal distance from camera to the floor 
+*  for the current row, which is posZ / p with p the current pixel distance 
+*  from the screen center, can be explained as follows:
+*
+*  The camera ray goes through the following two points: the camera itself, 
+*  which is at a certain height (posZ), and a point in front of the camera 
+*  (through an imagined vertical plane containing the screen pixels) with 
+*  horizontal distance 1 from the camera, and vertical position p lower than 
+*  posZ (posZ - p). When going through that point, the line has vertically 
+*  traveled by p units and horizontally by 1 unit. To hit the floor, it instead needs
+*  to travel by posZ units. It will travel the same ratio horizontally. 
+*  The ratio was 1 / p for going through the camera plane, so to go posZ times 
+*  farther to reach the floor, we get that the total horizontal distance is posZ / p. 
+*
+ * @cub3d: A pointer to the t_cub3d structure containing all game and rendering context.
+ *        This includes player position, viewing angles, screen dimensions, textures, and more.
+ * @fov_rad: The field of view in radians, specifying the horizontal extent of the visible world.
+ */
+void render_ceiling_floor(t_cub3d *cub3d, double fov_rad)
+{
+  
+  double pos_z = 0.5 * cub3d->height;
+  t_vec ray_min = angle_to_vec(cub3d->P->angle - fov_rad / 2);
+  t_vec ray_max = angle_to_vec(cub3d->P->angle + fov_rad / 2);
+  for (int y = (int) cub3d->height / 2; y < (int) cub3d->height; y++)
+  {
+    int p = y - cub3d->height / 2;
+    double row_distance = pos_z / p;
+    t_vec floor_step = vec_scal_d(vec_scal_m(vec_sub(ray_max, ray_min), row_distance), (double) cub3d->width);
+    t_vec floor = vec_add(cub3d->P->pos, vec_scal_m(ray_min, row_distance));
+    for (int x = 0; x < (int) cub3d->width; x++)
+    {
+      t_vec_int cell = {(int) floor.x, (int) floor.y};
+      int tx = (int) (cub3d->textures[FLOOR]->width * (floor.x - cell.x)) & (cub3d->textures[FLOOR]->width - 1);
+      int ty = (int) (cub3d->textures[FLOOR]->height * (floor.y - cell.y)) & (cub3d->textures[FLOOR]->height - 1);
+      uint32_t floor_color = get_pixel_color(cub3d->textures[FLOOR], tx, ty);
+      uint32_t ceiling_color = get_pixel_color(cub3d->textures[CEILING], tx, ty);
+      mlx_put_pixel(cub3d->buf, x, y, floor_color);
+      if (cub3d->height - y - 1 < 0 || cub3d->height - y - 1 >= cub3d->height)
+        printf("(% d | %d) %d\n", x , (int) cub3d->height - y - 1);
+      mlx_put_pixel(cub3d->buf, x, cub3d->height - y - 1, ceiling_color);
+      floor = vec_add(floor, floor_step);
     }
+  }
 }
 
-int nearest_int(double value) {
-	if (value >= 0) {
-		return (int)(value + 0.5);
-	} else {
-		return (int)(value - 0.5);
-	}
-}
-
-int nearest_x_or_y(double value, int max_value) {
-	if (fabs(value) < 1e-10) {
-		return nearest_int(value);
-	} else {
-		int result = (int)value;
-		if (result < 0) {
-			result = 0;
-		} else if (result >= max_value) {
-			result = max_value - 1;
-		}
-		return result;
-	}
-}
-
-double	raycast(t_cub3d *cub3d, double dir)
+void  cast_fov(void *ptr)
 {
-	int p_x = cub3d->P->mini_x;
-	int p_y = cub3d->P->mini_y;
-	int map_x = p_x / TILE_SIZE;
-	int map_y = p_y / TILE_SIZE;
-	double dir_x = cos(dir);
-	double dir_y = sin(dir);
-	double delta_dist_x = (fabs(dir_x) < 1e-10) ? 0.0 : sqrt(1 + (dir_y * dir_y) / (dir_x * dir_x));
-	double delta_dist_y = (fabs(dir_y) < 1e-10) ? 0.0 : sqrt(1 + (dir_x * dir_x) / (dir_y * dir_y));
-	double side_dist_x;
-	double side_dist_y;
-	if (dir_x < 0)
-		side_dist_x = (p_x - map_x * TILE_SIZE) * delta_dist_x;
-	else
-		side_dist_x = ((map_x + 1) * TILE_SIZE - p_x) * delta_dist_x;
-	if (dir_y < 0)
-		side_dist_y = (p_y - map_y * TILE_SIZE) * delta_dist_y;
-	else
-		side_dist_y = ((map_y + 1) * TILE_SIZE - p_y) * delta_dist_y;
-	int x;
-	int y;
-	int step_x = (dir_x < 0) ? -1 : 1;
-	int step_y = (dir_y < 0) ? -1 : 1;
-	while (true)
-	{
-		if (side_dist_x < side_dist_y)
-		{
-			if (dir_x < 0)
-				x = map_x * TILE_SIZE;
-			else
-				x = (map_x + 1) * TILE_SIZE;
-			y = nearest_x_or_y(p_y + (x - p_x) * tan(dir), cub3d->minimap->h_pixels);
-			//draw_rotated_cross(cub3d->img, x, y, 4, 2, ORANGE);
-		}
-		else
-		{
-			if (dir_y < 0)
-				y = map_y * TILE_SIZE;
-			else
-				y = (map_y + 1) * TILE_SIZE;
-			x = nearest_x_or_y(p_x + (y - p_y) / tan(dir), cub3d->minimap->w_pixels);
-			//draw_circle_trig(cub3d->img, x, y, 5, 1,TURQUOISE);
-		}
-		if (side_dist_x < side_dist_y)
-		{
-			map_x += step_x;
-			if (cub3d->minimap->map[map_y][map_x] > 0)
-				break;
-			side_dist_x += delta_dist_x * TILE_SIZE;
-		}
-		else
-		{
-			map_y += step_y;
-			if (cub3d->minimap->map[map_y][map_x] > 0)
-				break;
-			side_dist_y += delta_dist_y * TILE_SIZE;
-		}
-	}
-	draw_line2(cub3d->img, p_x, p_y, x, y, 0x00FF0000);
-	double prep_wall_dist = (side_dist_x < side_dist_y) ? side_dist_x : side_dist_y;
-	prep_wall_dist *= cos(cub3d->P->dir - dir);
-	
-	return (prep_wall_dist);
-}
+  t_cub3d *cub3d;
+  t_ray ray;
 
-void draw_view(t_cub3d *cub3d, double distance, int i)
-{
-	int min_x = i * (cub3d->width / FOV);
-	int max_x = (i + 1) * (cub3d->width / FOV);
-	int curr_color = 0xFF0000FF;
-	int current_height = (int)(cub3d->height / distance);
-	int start = (cub3d->height - current_height) / 2;
-	int end = start + current_height;
-	for (int x = min_x; x < max_x; x++)
-	{
-		for (int y = 0; y < (int) cub3d->height; y++)
-		{
-			if (y >= start && y <= end)
-				mlx_put_pixel(cub3d->img, x, y, curr_color);
-			else if (y < start)
-				mlx_put_pixel(cub3d->img, x, y, 0x00FFFFFF);
-			else
-				mlx_put_pixel(cub3d->img, x, y, 0xFF000000);
-		}
-	}
-}
-
-void	fov_cast(void *ptr)
-{
-	t_cub3d	*cub3d = (t_cub3d *) ptr;
-	int		i = 0;
-	double	distance;
-
-	double curr_dir = deg_to_rad(-FOV / 2);
-	while (curr_dir < deg_to_rad(FOV / 2))
-	{
-		distance = raycast(cub3d, cub3d->P->dir + curr_dir);
-		draw_view(cub3d, distance, i++);
-		(void) distance;
-		curr_dir += deg_to_rad(1);
-	}
+  cub3d = (t_cub3d *)ptr;
+  double fov_rad = deg_to_rad(cub3d->P->fov);
+  double ray_inc = fov_rad / cub3d->width;
+  cub3d = (t_cub3d *)ptr;
+  ray.index = 0;
+  render_ceiling_floor(cub3d, fov_rad);
+  while (ray.index < (int) cub3d->width)
+  {
+    ray.angle = cub3d->P->angle -  fov_rad / 2 + ray.index * ray_inc;
+    ray.dir = angle_to_vec(ray.angle);
+    cast_ray(cub3d, &ray);
+    render_wall(cub3d, &ray);
+    ray.index++;
+  }
 }
