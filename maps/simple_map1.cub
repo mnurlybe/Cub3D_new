@@ -1,10 +1,10 @@
-NO ./path_to_the_north_texture/folder/file
-SO ./path_to_the_south_texture/file
-WE ./path_to_the_west_texture/folder/folder/file
-EA ./path_to_the_east_texture/file
+NO ./textures/brickwall2.png
+SO ./textures/greystone.png
+WE ./textures/redbrick.png
+EA ./textures/colorstone.png
 
-F 220,100,0
-C 240,30,0
+F 255,255,255
+C 0,0,0
 
 11111111111111111111
 10000000001100100001

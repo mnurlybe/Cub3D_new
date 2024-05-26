@@ -17,11 +17,11 @@ void draw_minimap(t_cub3d *cub3d)
         while (x < cub3d->minimap->w_pixels)
         {
             if (cub3d->minimap->map[y / TILE_SIZE][x / TILE_SIZE] > 0)
-                mlx_put_pixel(cub3d->img, x, y, GREEN);
+                mlx_put_pixel(cub3d->buf, x, y, GREEN);
             else
-                mlx_put_pixel(cub3d->img, x, y, WHITE);
+                mlx_put_pixel(cub3d->buf, x, y, WHITE);
             if (x % TILE_SIZE == 0 || y % TILE_SIZE == 0 || x == cub3d->minimap->w_pixels - 1 || y == cub3d->minimap->h_pixels - 1)
-                mlx_put_pixel(cub3d->img, x, y, BLACK);
+                mlx_put_pixel(cub3d->buf, x, y, BLACK);
             x++;
         }
         x = 0;
@@ -46,7 +46,7 @@ void draw_player(t_cub3d *cub3d)
             if (delta_x * delta_x + delta_y * delta_y <= PLAYER_SIZE * PLAYER_SIZE / 4 + 1)
             {
                 y = delta_y + cub3d->P->pos.y;
-                mlx_put_pixel(cub3d->img, x, y, PLAYER_COLOR);
+                mlx_put_pixel(cub3d->buf, x, y, PLAYER_COLOR);
             }
             delta_y++;
         }
@@ -91,7 +91,7 @@ void draw_player_direction(t_cub3d *cub3d)
 {
     double x = cub3d->P->pos.x + cos(cub3d->P->angle) * PLAYER_SIZE;
     double y = cub3d->P->pos.y + sin(cub3d->P->angle) * PLAYER_SIZE;
-    draw_line(cub3d->img, cub3d->P->pos.x, cub3d->P->pos.y, x, y, PLAYER_COLOR); //black
+    draw_line(cub3d->buf, cub3d->P->pos.x, cub3d->P->pos.y, x, y, PLAYER_COLOR); //black
 }
 
 void draw_map(void *ptr)

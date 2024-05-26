@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/26 18:22:53 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/26 18:52:35 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define PLAYER_ROT_SPEED 0.015
 # define PLAYER_SIZE 6
 # define MINIMAP_SCALE 1.0
-# define TILE_SIZE 4
+# define TILE_SIZE 8
 # define M_PI 3.14159265358979323846
 # define M_PI_2 1.57079632679489661923
 
@@ -133,6 +133,8 @@ typedef struct s_cub3d
 	size_t			height;
 	t_player		*P;
 	mlx_texture_t	*textures[6];
+	uint32_t	floor;
+	uint32_t 	ceiling;
 	t_minimap		*minimap;
 }					t_cub3d;
 
@@ -197,7 +199,7 @@ void free_game(t_file *game);
 void free_array(char **arr);
 void free_textures(t_file *game);
 
-// parse_file.c
+// parse_file.cimg
 t_file *parse_file(char *file);
 
 // check_file.c
@@ -210,7 +212,7 @@ int array_len(char **array);
 int is_num(char *str);
 int is_only_allowed_chars(char *str);
 
-// map_utils.c
+// map_utils.cimg
 int get_map(t_file *game);
 void    copy_map(t_file *game_data, t_minimap *minimap);
 
@@ -222,7 +224,6 @@ char set_player_position(t_file *game_data, t_cub3d *cub3d);
 void print_textures(t_file *info);
 void print_floor_ceiling(char **arr);
 
-#endif
 // raycasting_debugging_utils.c
 
 void draw_cross(mlx_image_t *img, int x, int y, int size, int color);

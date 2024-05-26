@@ -54,16 +54,18 @@ char    *get_wall_side(int side)
 void    init_textures(t_file *game_data, t_cub3d *cub3d)
 {
     int index = 0;
-    while (game_data->texture_paths[index])
+    cub3d->textures[NORTH] = mlx_load_png(game_data->no[1]);
+    cub3d->textures[SOUTH] = mlx_load_png(game_data->so[1]);
+    cub3d->textures[EAST] = mlx_load_png(game_data->ea[1]);
+    cub3d->textures[WEST] = mlx_load_png(game_data->we[1]);
+    cub3d->floor = game_data->floor[0] << 16 | game_data->floor[1] << 8 | game_data->floor[2];
+    cub3d->ceiling = game_data->ceiling[0] << 16 | game_data->ceiling[1] << 8 | game_data->ceiling[2];
+    while (index < 4)
     {
-        cub3d->textures[index] = mlx_load_png(game_data->texture_paths[index]);
         if (!cub3d->textures[index])
         {
-            printf("Error loading texture %s\n", game_data->texture_paths[index]);
-            exit(1);
+            write(1, "Error textures\n", 6); // add proper error message
         }
-        else
-            printf("%s %s\n", get_wall_side(index), game_data->texture_paths[index]);
         index++;
     }
 }
