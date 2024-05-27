@@ -22,3 +22,11 @@ probably need to move only the visible part of the map.
 Meaning that every pixel is going to be checked if it is: 1.outside of map, 2. wall, 3.nowall. 
 Therefore, in move_player function, we can use normal Players coordinates (x and y) to move in the window and in parallel it is going to adjust visible part of the minimap.
 Like these we will not duplicate player's coordinate twice in a minimap and normal window.
+
+
+27.05:
+
+1. finalize minimap_vis
+2. there is a segfaul when the path to textures is wrong, need to fix that. 
+3. Add mouse rotation.
+4. Norminette. 

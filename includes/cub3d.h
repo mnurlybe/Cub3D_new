@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/26 18:52:35 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/27 15:25:58 by julienmoign      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 
 // define constants
 # define FOV 60
-# define PLAYER_SPEED 0.09
+# define PLAYER_SPEED 0.2
 # define PLAYER_ROT_SPEED 0.015
 # define PLAYER_SIZE 6
 # define MINIMAP_SCALE 1.0
-# define TILE_SIZE 8
+# define TILE_SIZE 16
 # define M_PI 3.14159265358979323846
 # define M_PI_2 1.57079632679489661923
 
@@ -128,7 +128,7 @@ typedef struct s_cub3d
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
-  mlx_image_t   *buf;
+  	mlx_image_t   *buf;
 	size_t			width;
 	size_t			height;
 	t_player		*P;
@@ -141,6 +141,9 @@ typedef struct s_cub3d
 // draw_minimap.c
 void draw_map(void *ptr);
 void draw_player(t_cub3d *cub3d);
+
+// draw_minimap_vis.c
+void draw_map_vis(void *ptr);
 
 //cast field of view
 void	cast_fov(void *ptr);

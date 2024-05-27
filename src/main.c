@@ -23,7 +23,7 @@ int    ft_cub3d(t_file *game_data)
     mlx_loop_hook(cub3d->mlx, handle_keys, cub3d);
    
     mlx_loop_hook(cub3d->mlx, cast_fov, cub3d);
-     mlx_loop_hook(cub3d->mlx, draw_map, cub3d);
+    mlx_loop_hook(cub3d->mlx, draw_map_vis, cub3d);
     mlx_image_t *tmp = cub3d->img;
     cub3d->img = cub3d->buf;
     cub3d->buf = tmp;
