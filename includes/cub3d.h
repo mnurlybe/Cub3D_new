@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/27 19:28:18 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/27 19:40:31 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +155,7 @@ void init(t_cub3d *cub3d, t_file *game_data);
 // keys.c
 void handle_keys(void *ptr);
 
-// movement.c
-/**
- * Updates the direction of the player in the game.
- *
- * @param cub3d The pointer to the t_cub3d struct representing the game state.
- * @param direction The new direction to update the player's direction to.
- */
-void update_direction(t_cub3d *cub3d, double direction);
+
 
 /**
  * Rotates the player in the game.
@@ -232,6 +225,13 @@ int	get_map_indexes(t_file *info);
 
 // player_utils.c
 char set_player_position(t_file *game_data, t_cub3d *cub3d);
+/**
+ * Updates the direction of the player in the game.
+ *
+ * @param cub3d The pointer to the t_cub3d struct representing the game state.
+ * @param direction The new direction to update the player's direction to.
+ */
+void update_direction(t_cub3d *cub3d, double direction);
 
 
 // print_testing.c
