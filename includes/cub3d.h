@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/27 15:25:58 by julienmoign      ###   ########.fr       */
+/*   Updated: 2024/05/27 19:28:18 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,8 @@ typedef struct s_cub3d
 }					t_cub3d;
 
 // draw_minimap.c
-void draw_map(void *ptr);
-void draw_player(t_cub3d *cub3d);
+// void draw_map(void *ptr);
+// void draw_player(t_cub3d *cub3d);
 
 // draw_minimap_vis.c
 void draw_map_vis(void *ptr);
@@ -207,6 +207,8 @@ t_file *parse_file(char *file);
 
 // check_file.c
 int check_file(t_file *info);
+int check_floor_ceiling(char **floor, char **ceiling);
+int check_textures(t_file *info);
 
 // check_file_utils.c
 int is_only_whitespace(char *line);
@@ -215,9 +217,18 @@ int array_len(char **array);
 int is_num(char *str);
 int is_only_allowed_chars(char *str);
 
+// check_file_utils_2.c
+int parse_textures(t_file *info);
+int parse_rgb(char *floor, char *ceiling, t_file *info);
+int parse_floor_ceiling(t_file *info);
+int	validate_borders(char *line, size_t end_index, size_t start_index);
+
 // map_utils.cimg
 int get_map(t_file *game);
 void    copy_map(t_file *game_data, t_minimap *minimap);
+
+// map_utils2.c
+int	get_map_indexes(t_file *info);
 
 // player_utils.c
 char set_player_position(t_file *game_data, t_cub3d *cub3d);
@@ -300,7 +311,7 @@ t_vec_int	vec_int_scal_d(t_vec a, double scalar);
 
 /**
  * Calculates the dot product of two vectors.
- *
+ *int	validate_borders(char *line, size_t end_index, size_t start_index)
  * @param a The first vector.
  * @param b The second vector.
  * @return The dot product of the two vectors.
