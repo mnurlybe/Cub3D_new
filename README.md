@@ -26,7 +26,7 @@ Like these we will not duplicate player's coordinate twice in a minimap and norm
 
 27.05:
 
-1. finalize minimap_vis
+1. finalize minimap_vis.
 2. there is a segfaul when the path to textures is wrong, need to fix that. 
 3. Norminette.
-4. Diversify the input file. 
+4. Diversify the input files. 
