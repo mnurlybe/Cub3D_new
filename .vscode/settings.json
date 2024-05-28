@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "cub3d.h": "c",
-        "random": "c"
+        "random": "c",
+        "vectors.h": "c"
     },
     "cmake.configureOnOpen": true
 }

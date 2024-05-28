@@ -13,7 +13,6 @@ void	init_player(t_file *game_data, t_cub3d *cub3d)
 		cub3d->P->angle = 0;
 	else if (direction == 'W')
 		cub3d->P->angle = M_PI;
-	cub3d->P->angle = 0.5 * M_PI;
 	cub3d->P->dir = angle_to_vec(cub3d->P->angle);
 	cub3d->P->fov = FOV;
 }
@@ -34,23 +33,6 @@ void	init_minimap(t_file *game_data, t_cub3d *cub3d)
 	}
 }
 
-char	*get_wall_side(int side)
-{
-	if (side == NORTH)
-		return ("NO");
-	else if (side == SOUTH)
-		return ("SO");
-	else if (side == EAST)
-		return ("EA");
-	else if (side == WEST)
-		return ("WE");
-	else if (side == FLOOR)
-		return ("F");
-	else if (side == CEILING)
-		return ("C");
-	return ("");
-}
-
 void	init_textures(t_file *game_data, t_cub3d *cub3d)
 {
 	cub3d->textures[NORTH] = game_data->textures[NORTH];
@@ -64,8 +46,8 @@ void	init_textures(t_file *game_data, t_cub3d *cub3d)
 // init cub3d struct
 void	init(t_cub3d *cub3d, t_file *game_data)
 {
-	cub3d->width = 1920;
-	cub3d->height = 1080;
+	cub3d->width = 980;
+	cub3d->height = 800;
 	cub3d->P = malloc(sizeof(t_player));
 	if (!cub3d->P)
 		return ; // add proper error message

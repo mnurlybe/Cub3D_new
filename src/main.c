@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:50:37 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/27 19:52:16 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:10:36 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	loop_program(t_cub3d *cub3d)
 	mlx_image_to_window(cub3d->mlx, cub3d->img, 0, 0);
 	mlx_loop_hook(cub3d->mlx, handle_movement, cub3d);
 	mlx_loop_hook(cub3d->mlx, handle_keys, cub3d);
+    mlx_loop_hook(cub3d->mlx, handle_mouse, cub3d);
 	mlx_loop_hook(cub3d->mlx, cast_fov, cub3d);
 	mlx_loop_hook(cub3d->mlx, draw_map_vis, cub3d);
 	tmp = cub3d->img;
