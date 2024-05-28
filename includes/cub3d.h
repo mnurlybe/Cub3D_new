@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/27 19:40:31 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:49:20 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ typedef struct s_file
 	int 	map_end_index;
 	size_t  map_h_tiles;
 	size_t  map_w_tiles;
+	mlx_texture_t	*textures[4];
 }				t_file;
 
 // mlx struct window, image and their dimenstions
@@ -132,7 +133,7 @@ typedef struct s_cub3d
 	size_t			width;
 	size_t			height;
 	t_player		*P;
-	mlx_texture_t	*textures[6];
+	mlx_texture_t	*textures[4];
 	uint32_t	floor;
 	uint32_t 	ceiling;
 	t_minimap		*minimap;

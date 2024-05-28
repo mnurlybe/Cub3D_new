@@ -1,4 +1,4 @@
-NO ./textures/brickwall2.png
+NO ./textures/greystone.png
 SO ./textures/greystone.png
 WE ./textures/redbrick.png
 EA ./textures/colorstone.png

@@ -18,6 +18,10 @@ void init_info(t_file *info)
     info->map_end_index = -1;
     info->map_h_tiles = 0;
     info->map_w_tiles = 0;
+    info->textures[NORTH] = NULL;
+    info->textures[SOUTH] = NULL;
+    info->textures[EAST] = NULL;
+    info->textures[WEST] = NULL;
 }
 
 /*

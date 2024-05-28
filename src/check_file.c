@@ -6,11 +6,29 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:51:55 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/27 19:29:39 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:03:08 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+int	allocate_textures(t_file *info)
+{
+	info->textures[NORTH] = mlx_load_png(info->no[1]);
+	if (!info->textures[NORTH])
+		return (0);
+	info->textures[SOUTH] = mlx_load_png(info->so[1]);
+	if (!info->textures[SOUTH])
+		return (0);
+	info->textures[EAST] = mlx_load_png(info->ea[1]);
+	if (!info->textures[EAST])
+		return (0);
+	info->textures[WEST] = mlx_load_png(info->we[1]);
+	if (!info->textures[WEST])
+		return (0);
+	return (1);
+}
+		// mlx_delete_texture(info->textures[NORTH]);
 
 int	check_textures(t_file *info)
 {
@@ -21,6 +39,8 @@ int	check_textures(t_file *info)
 		return (0);
 	if (ft_strlen(info->no[0]) != 2 || ft_strlen(info->so[0]) != 2
 		|| ft_strlen(info->we[0]) != 2 || ft_strlen(info->ea[0]) != 2)
+		return (0);
+	if (!allocate_textures(info))
 		return (0);
 	return (1);
 }
