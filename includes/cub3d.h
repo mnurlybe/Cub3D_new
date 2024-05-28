@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/28 19:09:21 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/28 19:27:50 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,7 @@ void				render_vertical_stripe(t_cub3d *cub3d, t_ray *ray);
 int					is_wall(int **map, t_vec new_pos);
 double				deg_to_rad(double angle);
 int					is_zero(double value);
+int 				get_rgba(int r, int g, int b, int a);
 uint32_t			get_pixel_color(mlx_texture_t *texture, int x, int y);
 
 #endif

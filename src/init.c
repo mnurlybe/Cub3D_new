@@ -39,8 +39,8 @@ void	init_textures(t_file *game_data, t_cub3d *cub3d)
 	cub3d->textures[SOUTH] = game_data->textures[SOUTH];
 	cub3d->textures[EAST] = game_data->textures[EAST];
 	cub3d->textures[WEST] = game_data->textures[WEST];
-	cub3d->floor = game_data->floor[0] << 16 | game_data->floor[1] << 8 | game_data->floor[2];
-	cub3d->ceiling = game_data->ceiling[0] << 16 | game_data->ceiling[1] << 8 | game_data->ceiling[2];
+	cub3d->floor = get_rgba(game_data->floor[0], game_data->floor[1], game_data->floor[2], 255);
+	cub3d->ceiling = get_rgba(game_data->ceiling[0], game_data->ceiling[1], game_data->ceiling[2], 255);
 }
 
 // init cub3d struct

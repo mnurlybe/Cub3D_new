@@ -1,7 +1,7 @@
-NO ./textures/greystone.png
+NO ./textures/brickwall2.png
 SO ./textures/greystone.png
 WE ./textures/redbrick.png
-EA ./textures/colorstone.png
+EA ./textures/eagle.png
 
 F 255,255,255
 C 0,0,0
