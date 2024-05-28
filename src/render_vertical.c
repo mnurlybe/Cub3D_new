@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rendering.c                                        :+:      :+:    :+:   */
+/*   render_vertical.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:38:49 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/28 16:20:44 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/28 17:48:55 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_vertical	calculate_vertical_strip(t_cub3d *cub3d, t_ray *ray)
 {
 	t_vertical	vert;
 
-	vert.delta_height = (int)(cub3d->height / ray->distance);
+	vert.delta_height = (int)(cub3d->height / (ray->distance));
 	vert.start = (int)(cub3d->height - vert.delta_height) / 2;
 	vert.end = (int)(vert.start + vert.delta_height);
 	return (vert);

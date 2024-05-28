@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:01:41 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/28 16:44:04 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/28 17:49:59 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ void	cast_ray(t_cub3d *cub3d, t_ray *ray)
 		ray->distance = distance.x;
 	else
 		ray->distance = distance.y;
-	ray->distance *= cos(cub3d->P->angle - ray->angle);
 	ray->wall_hit = vec_add(cub3d->P->pos, vec_scal_m(ray->dir, ray->distance));
+	ray->distance *= cos(cub3d->P->angle - ray->angle);
 }
 
 void	cast_fov(void *ptr)
