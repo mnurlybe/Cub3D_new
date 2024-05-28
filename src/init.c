@@ -26,8 +26,8 @@ void	init_textures(t_file *game_data, t_cub3d *cub3d)
 	cub3d->textures[SOUTH] = mlx_load_png(game_data->so[1]);
 	cub3d->textures[EAST] = mlx_load_png(game_data->ea[1]);
 	cub3d->textures[WEST] = mlx_load_png(game_data->we[1]);
-	cub3d->floor = game_data->floor[0] << 16 | game_data->floor[1] << 8 | game_data->floor[2];
-	cub3d->ceiling = game_data->ceiling[0] << 16 | game_data->ceiling[1] << 8 | game_data->ceiling[2];
+	cub3d->floor = game_data->floor[0] << 24 | game_data->floor[1] << 16 | game_data->floor[2] << 8 | 0xFF;
+	cub3d->ceiling = game_data->ceiling[0] << 24 | game_data->ceiling[1] << 16 | game_data->ceiling[2] << 8 | 0xFF;
 	while (index < 4)
 	{
 		if (!cub3d->textures[index])
@@ -57,8 +57,8 @@ void	init_minimap(t_file *game_data, t_cub3d *cub3d)
 // init cub3d struct
 void	init(t_cub3d *cub3d, t_file *game_data)
 {
-	cub3d->width = 1920;
-	cub3d->height = 1080;
+	cub3d->width = 980;
+	cub3d->height = 800;
 	cub3d->P = malloc(sizeof(t_player));
 	if (!cub3d->P)
 		return ; // add proper error message

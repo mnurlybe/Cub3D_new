@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/28 16:53:19 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/28 19:03:57 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ void				init(t_cub3d *cub3d, t_file *game_data);
 
 // keys.c
 void				handle_keys(void *ptr);
+void				handle_mouse(void *ptr);
 
 // movement.c
 /**
@@ -250,14 +251,5 @@ int					is_wall(int **map, t_vec new_pos);
 double				deg_to_rad(double angle);
 int					is_zero(double value);
 uint32_t			get_pixel_color(mlx_texture_t *texture, int x, int y);
-
-/**
- * Checks if a given position is not colliding with a wall.
- *
- * @param map The map of the game.
- * @param pos The position to check.
- * @return 1 if the position is not colliding with a wall, 0 otherwise.
- */
-int					is_wall(int **map, t_vec pos);
 
 #endif

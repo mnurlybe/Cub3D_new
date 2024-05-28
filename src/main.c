@@ -5,7 +5,7 @@ int    ft_cub3d(t_file *game_data)
     t_cub3d    *cub3d;
     cub3d = malloc(sizeof(t_cub3d));
     init(cub3d, game_data);
-    cub3d->mlx = mlx_init(cub3d->width, cub3d->height, "Cub3D", true);
+    cub3d->mlx = mlx_init(cub3d->width, cub3d->height, "Cub3D", false);
     if (!cub3d->mlx)
     {
         free(cub3d);
@@ -21,6 +21,7 @@ int    ft_cub3d(t_file *game_data)
     mlx_image_to_window(cub3d->mlx, cub3d->img, 0, 0);
     mlx_loop_hook(cub3d->mlx, handle_movement, cub3d);
     mlx_loop_hook(cub3d->mlx, handle_keys, cub3d);
+    mlx_loop_hook(cub3d->mlx, handle_mouse, cub3d);
     mlx_loop_hook(cub3d->mlx, cast_fov, cub3d);
     mlx_loop_hook(cub3d->mlx, draw_map, cub3d);
     mlx_image_t *tmp = cub3d->img;
