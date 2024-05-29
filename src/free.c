@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:31 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 17:18:36 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:36:58 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	free_game(t_file *game)
 {
 	if (!game)
 		return ;
-	printf("FREE GAME\n");
 	free_textures(game);
 	if (game->split_file != NULL)
 		free_array(game->split_file);
