@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:31 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 19:27:43 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/29 20:40:29 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	free_program(t_cub3d *cub3d)
 {
 	size_t	i;
 
-	free(cub3d->P);
+	free(cub3d->p);
 	i = 0;
 	while (i < cub3d->minimap->h_tiles)
 	{
@@ -51,7 +51,6 @@ void	free_textures(t_file *game)
 		mlx_delete_texture(game->textures[WEST]);
 }
 
-
 void	free_game(t_file *game)
 {
 	if (!game)
@@ -59,7 +58,6 @@ void	free_game(t_file *game)
 	free_textures(game);
 	if (game->split_file != NULL)
 		free_array(game->split_file);
-
 	if (game->map != NULL)
 		free_array(game->map);
 	free(game);

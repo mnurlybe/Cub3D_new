@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:01:41 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/29 16:00:56 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/29 20:40:29 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_vec	calculate_initial_offset(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist,
 	t_vec	p;
 	t_vec	offset;
 
-	p = cub3d->P->pos;
+	p = cub3d->p->pos;
 	if (ray->dir.x < 0)
 		offset.x = (p.x - map.x * TILE_SIZE) * delta_dist.x;
 	else
@@ -62,17 +62,16 @@ void	cast_ray(t_cub3d *cub3d, t_ray *ray)
 	t_vec_int	map;
 
 	delta_dist = vec_apply(vec_inv(ray->dir), fabs);
-	map = vec_int_scal_d(cub3d->P->pos, TILE_SIZE);
+	map = vec_int_scal_d(cub3d->p->pos, TILE_SIZE);
 	distance = calculate_initial_offset(cub3d, ray, delta_dist, map);
 	dda(cub3d, ray, delta_dist, map, &distance);
 	if (vertical_gridline_hit(&distance))
 		ray->distance = distance.x;
 	else
 		ray->distance = distance.y;
-	ray->wall_hit = vec_add(cub3d->P->pos, vec_scal_m(ray->dir, ray->distance));
-	ray->distance *= cos(cub3d->P->angle - ray->angle);
+	ray->wall_hit = vec_add(cub3d->p->pos, vec_scal_m(ray->dir, ray->distance));
+	ray->distance *= cos(cub3d->p->angle - ray->angle);
 }
-
 
 void	cast_fov(void *ptr)
 {
@@ -82,13 +81,13 @@ void	cast_fov(void *ptr)
 	double	ray_inc;
 
 	cub3d = (t_cub3d *)ptr;
-	fov_rad = deg_to_rad(cub3d->P->fov);
+	fov_rad = deg_to_rad(cub3d->p->fov);
 	ray_inc = fov_rad / cub3d->width;
 	cub3d = (t_cub3d *)ptr;
 	ray.index = 0;
 	while (ray.index < (int)cub3d->width)
 	{
-		ray.angle = cub3d->P->angle - fov_rad / 2 + ray.index * ray_inc;
+		ray.angle = cub3d->p->angle - fov_rad / 2 + ray.index * ray_inc;
 		ray.dir = angle_to_vec(ray.angle);
 		cast_ray(cub3d, &ray);
 		render_vertical_stripe(cub3d, &ray);

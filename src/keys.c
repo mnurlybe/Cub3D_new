@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:40:03 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 19:25:06 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/29 20:01:46 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ void	handle_keys(void *ptr)
 
 	cub3d = (t_cub3d *)ptr;
 	if (mlx_is_key_down(cub3d->mlx, MLX_KEY_ESCAPE))
-	{
 		mlx_close_window(cub3d->mlx);
-	}
 }
 
 void	handle_mouse(void *ptr)
@@ -40,7 +38,7 @@ void	handle_mouse(void *ptr)
 		update_direction(cub3d, PLAYER_ROT_SPEED * delta / 5);
 		mlx_set_mouse_pos(cub3d->mlx, cub3d->width / 2, cub3d->height / 2);
 	}
-	else if (delta < - 2)
+	else if (delta < -2)
 	{
 		update_direction(cub3d, PLAYER_ROT_SPEED * delta / 5);
 		mlx_set_mouse_pos(cub3d->mlx, cub3d->width / 2, cub3d->height / 2);
