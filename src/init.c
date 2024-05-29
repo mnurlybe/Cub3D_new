@@ -46,7 +46,7 @@ void	init_textures(t_file *game_data, t_cub3d *cub3d)
 // init cub3d struct
 void	init(t_cub3d *cub3d, t_file *game_data)
 {
-	cub3d->width = 980;
+	cub3d->width = 920;
 	cub3d->height = 800;
 	cub3d->P = malloc(sizeof(t_player));
 	if (!cub3d->P)

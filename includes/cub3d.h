@@ -17,11 +17,11 @@
 
 // define constants
 # define FOV 60
-# define PLAYER_SPEED 0.2
-# define PLAYER_ROT_SPEED 0.015
+# define PLAYER_SPEED 0.1
+# define PLAYER_ROT_SPEED 0.02
 # define PLAYER_SIZE 6
 # define MINIMAP_SCALE 1.0
-# define TILE_SIZE 16
+# define TILE_SIZE 1
 # define M_PI 3.14159265358979323846
 # define M_PI_2 1.57079632679489661923
 
@@ -45,8 +45,6 @@ typedef enum e_wallside
 	SOUTH,
 	WEST,
 	EAST,
-	FLOOR,
-	CEILING,
 }					t_wallside;
 
 typedef struct s_tex_map
