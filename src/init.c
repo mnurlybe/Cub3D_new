@@ -25,12 +25,12 @@ void	init_minimap(t_file *game_data, t_cub3d *cub3d)
 	cub3d->minimap->h_pixels = game_data->map_h_tiles * TILE_SIZE;
 	copy_map(game_data, cub3d->minimap);
 	// print minimap --> remove this before submitting
-	for (size_t i = 0; i < cub3d->minimap->h_tiles; i++)
-	{
-		for (size_t j = 0; j < cub3d->minimap->w_tiles; j++)
-			printf("%d", cub3d->minimap->map[i][j]);
-		printf("\n");
-	}
+	// for (size_t i = 0; i < cub3d->minimap->h_tiles; i++)
+	// {
+	// 	for (size_t j = 0; j < cub3d->minimap->w_tiles; j++)
+	// 		printf("%d", cub3d->minimap->map[i][j]);
+	// 	printf("\n");
+	// }
 }
 
 void	init_textures(t_file *game_data, t_cub3d *cub3d)
