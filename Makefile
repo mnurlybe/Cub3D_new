@@ -27,7 +27,7 @@ DEPS = $(OBJECTS:.o=.d)
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@gcc $(CFLAGS) -I $(MY_HEADER) -c $< -o $@
+	@gcc $(CFLAGS) -MMD -I $(MY_HEADER) -c $< -o $@
 	@echo -n "Compiling src... $<\r"
 
 $(NAME): $(OBJECTS)

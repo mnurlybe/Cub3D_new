@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:38:54 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/27 19:52:36 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:52:43 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,33 @@ void	rotation(t_cub3d *cub3d)
 		update_direction(cub3d, PLAYER_ROT_SPEED);
 }
 
-t_vec    wallslide(t_cub3d *cub3d, double angle)
+t_vec	wallslide(t_cub3d *cub3d, double angle)
 {
-    t_vec new_dir1 = {.x = 0, .y = cub3d->P->dir.y};
-    t_vec new_dir2 = {.x = cub3d->P->dir.x, .y = 0};
-    t_vec new_pos1 = vec_add(cub3d->P->pos, vec_scal_m(vec_rotate(new_dir1, angle), PLAYER_SPEED));
-    t_vec new_pos2 = vec_add(cub3d->P->pos, vec_scal_m(vec_rotate(new_dir2, angle), PLAYER_SPEED));
-    if (!is_wall(cub3d->minimap->map, new_pos1))
-        return (new_pos1);
-    else if (!is_wall(cub3d->minimap->map, new_pos2))
-        return (new_pos2);
-    else
-        return (cub3d->P->pos);
+	t_vec	new_dir1;
+	t_vec	new_dir2;
+	t_vec	new_pos1;
+	t_vec	new_pos2;
+
+	new_dir1 = (t_vec){.x = 0, .y = cub3d->P->dir.y};
+	new_dir2 = (t_vec){.x = cub3d->P->dir.x, .y = 0};
+	new_pos1 = vec_add(cub3d->P->pos, vec_scal_m(vec_rotate(new_dir1, angle),
+				PLAYER_SPEED));
+	new_pos2 = vec_add(cub3d->P->pos, vec_scal_m(vec_rotate(new_dir2, angle),
+				PLAYER_SPEED));
+	if (!is_wall(cub3d->minimap->map, new_pos1))
+		return (new_pos1);
+	else if (!is_wall(cub3d->minimap->map, new_pos2))
+		return (new_pos2);
+	else
+		return (cub3d->P->pos);
 }
 
 void	update_position(t_cub3d *cub3d, double angle)
 {
 	t_vec	new_pos;
 
-	new_pos = vec_add(cub3d->P->pos,
-			vec_scal_m(vec_rotate(cub3d->P->dir, angle),
-				PLAYER_SPEED));
+	new_pos = vec_add(cub3d->P->pos, vec_scal_m(vec_rotate(cub3d->P->dir,
+					angle), PLAYER_SPEED));
 	if (!is_wall(cub3d->minimap->map, new_pos))
 		cub3d->P->pos = new_pos;
 	else
