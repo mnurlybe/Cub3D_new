@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 20:47:28 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/29 20:50:35 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,9 +185,9 @@ void				handle_mouse(void *ptr);
 void				rotation(t_cub3d *cub3d);
 
 /**
- * This function updates the 
+ * This function updates the
  * player's position on the map based on the current direction of the player.
-*/
+ */
 void				update_position(t_cub3d *cub3d, double angle);
 
 /**
@@ -276,6 +276,8 @@ int					is_zero(double value);
 int					get_rgba(int r, int g, int b, int a);
 uint32_t			get_pixel_color(mlx_texture_t *texture, int x, int y);
 int					is_newline(char c);
+void				draw_line_vis(mlx_image_t *img, t_vec p1, t_vec p2,
+						int color);
 
 void				render_sprite(t_cub3d *cub3d);
 #endif
