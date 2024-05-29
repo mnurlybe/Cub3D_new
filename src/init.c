@@ -41,13 +41,18 @@ void	init_textures(t_file *game_data, t_cub3d *cub3d)
 	cub3d->textures[WEST] = game_data->textures[WEST];
 	cub3d->floor = get_rgba(game_data->floor[0], game_data->floor[1], game_data->floor[2], 255);
 	cub3d->ceiling = get_rgba(game_data->ceiling[0], game_data->ceiling[1], game_data->ceiling[2], 255);
+	cub3d->sprite = malloc(sizeof(t_sprite));
+	cub3d->sprite->sprite = mlx_load_png("./textures/sprite_s.png");
+	cub3d->sprite->pos = (t_vec_int){.x = cub3d->width - cub3d->sprite->sprite->width - 10, .y = 10};
+	cub3d->sprite->counter = 0;
+	cub3d->sprite->direction = 0.5;
 }
 
 // init cub3d struct
 void	init(t_cub3d *cub3d, t_file *game_data)
 {
-	cub3d->width = 920;
-	cub3d->height = 800;
+	cub3d->width = SCREEN_WIDTH;
+	cub3d->height = SCREEN_HEIGHT;
 	cub3d->P = malloc(sizeof(t_player));
 	if (!cub3d->P)
 		return ; // add proper error message

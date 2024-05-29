@@ -10,10 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
-#include <float.h>
-#include <math.h>
-#include <stdbool.h>
+#include "cub3d.h"
 
 t_vec	calculate_initial_offset(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist,
 		t_vec_int map)
@@ -94,7 +91,7 @@ void	cast_fov(void *ptr)
 		ray.dir = angle_to_vec(ray.angle);
 		cast_ray(cub3d, &ray);
 		render_vertical_stripe(cub3d, &ray);
-		//render_sprite(cub3d, &ray);
 		ray.index++;
 	}
+	render_sprite(cub3d);
 }

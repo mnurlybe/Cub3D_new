@@ -16,14 +16,17 @@
 # include "libs.h"
 
 // define constants
+//Screen settings
+# define SCREEN_WIDTH 920
+# define SCREEN_HEIGHT 800
+
+//Player settings
 # define FOV 60
 # define PLAYER_SPEED 0.1
 # define PLAYER_ROT_SPEED 0.02
 # define PLAYER_SIZE 6
 # define MINIMAP_SCALE 1.0
 # define TILE_SIZE 1
-# define M_PI 3.14159265358979323846
-# define M_PI_2 1.57079632679489661923
 
 // Color codes
 # define RED 0xFF0000FF
@@ -98,6 +101,15 @@ typedef struct s_minimap
 	size_t			h_pixels;
 }					t_minimap;
 
+
+typedef struct s_sprite
+{
+	t_vec_int		pos;
+	mlx_texture_t	*sprite;
+	double				direction;
+	double				counter;
+}					t_sprite;
+
 // file struct
 typedef struct s_file
 {
@@ -116,6 +128,7 @@ typedef struct s_file
 	size_t  map_h_tiles;
 	size_t  map_w_tiles;
 	mlx_texture_t	*textures[4];
+	t_sprite	*sprite;
 }				t_file;
 
 // mlx struct window, image and their dimenstions
@@ -128,8 +141,9 @@ typedef struct s_cub3d
 	size_t			height;
 	t_player		*P;
 	mlx_texture_t	*textures[4];
+	t_sprite	*sprite;
 	uint32_t	floor;
-	uint32_t 	ceiling;
+	uint32_t	ceiling;
 	t_minimap		*minimap;
 }					t_cub3d;
 
@@ -256,4 +270,5 @@ int					is_zero(double value);
 int 				get_rgba(int r, int g, int b, int a);
 uint32_t			get_pixel_color(mlx_texture_t *texture, int x, int y);
 
+void	render_sprite(t_cub3d *cub3d);
 #endif
