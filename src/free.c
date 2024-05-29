@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:31 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/28 18:58:32 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:51:37 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	free_program(t_cub3d *cub3d)
 		free(cub3d->minimap->map[i]);
 		i++;
 	}
+	free(cub3d->sprite);
 	free(cub3d->minimap->map);
 	free(cub3d->minimap);
 	free(cub3d);
