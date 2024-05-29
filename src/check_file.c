@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:51:55 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 14:20:14 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/29 19:38:28 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,23 +107,23 @@ int	check_file(t_file *info)
 {
 	if (!get_map_indexes(info))
 	{
-		printf("map not found\n");
-		return (0); // add proper error message
+		ft_putstr_fd("Error: Map is not found.\n", 2);
+		return (0);
 	}
 	if (!parse_textures(info))
 	{
-		printf("textures: error\n");
-		return (0); // add proper error message
+		ft_putstr_fd("Error: Textures are not valid.\n", 2);
+		return (0);
 	}
 	if (!parse_floor_ceiling(info))
 	{
-		printf("floor and ceiling: error\n");
-		return (0); // add proper error message
+		ft_putstr_fd("Error: Floor or Ceiling are not valid.\n", 2);
+		return (0);
 	}
 	if (!check_map(info))
 	{
-		printf("map: error\n");
-		return (0); // add proper error message
+		ft_putstr_fd("Error: Map is not valid.\n", 2);
+		return (0);
 	}
 	return (1);
 }

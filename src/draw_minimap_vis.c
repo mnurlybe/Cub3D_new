@@ -14,10 +14,10 @@ void draw_minimap_vis(t_cub3d *cub3d)
     double x;
     double y;
     
-    sq_start_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) - 64;
-    sq_start_y = cub3d->P->pos.y * (MINIMAP_SCALE / TILE_SIZE) - 64;
-    sq_end_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) + 64;
-    sq_end_y = cub3d->P->pos.y * (MINIMAP_SCALE / TILE_SIZE) + 64;
+    sq_start_x = cub3d->p->pos.x * (MINIMAP_SCALE / TILE_SIZE) - 64;
+    sq_start_y = cub3d->p->pos.y * (MINIMAP_SCALE / TILE_SIZE) - 64;
+    sq_end_x = cub3d->p->pos.x * (MINIMAP_SCALE / TILE_SIZE) + 64;
+    sq_end_y = cub3d->p->pos.y * (MINIMAP_SCALE / TILE_SIZE) + 64;
     x = 0;
     y = 0;
 
@@ -37,7 +37,7 @@ void draw_minimap_vis(t_cub3d *cub3d)
             x++;
             sq_start_x++;
         }
-        sq_start_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) - 64;
+        sq_start_x = cub3d->p->pos.x * (MINIMAP_SCALE / TILE_SIZE) - 64;
         x = 0;
         sq_start_y++;
         y++;
@@ -112,8 +112,8 @@ void draw_player_direction_vis(t_cub3d *cub3d)
 
     x1 = 64;
     y1 = 64;
-    x2 = x1 + 8 * cos(cub3d->P->angle);
-    y2 = y1 + 8 * sin(cub3d->P->angle);
+    x2 = x1 + 8 * cos(cub3d->p->angle);
+    y2 = y1 + 8 * sin(cub3d->p->angle);
     draw_line_vis(cub3d->buf, x1, y1, x2, y2, PLAYER_COLOR);
 }
 

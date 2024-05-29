@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 19:17:16 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/29 20:42:31 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ typedef struct s_ray
  * Struct s_player - Represents a player in the 2D world.
  * @pos: A t_vec struct representing the player's position in the world.
  * @dir: A double representing the direction the player is facing in radians.
- * @fov: A double representing the player's field of view. 
- * 		 This is typically in degrees.
+ * @fov: A double representing the player's field of view.
+ * 			This is typically in degrees.
  */
 typedef struct s_player
 {
@@ -144,7 +144,7 @@ typedef struct s_cub3d
 	mlx_image_t		*buf;
 	size_t			width;
 	size_t			height;
-	t_player		*P;
+	t_player		*p;
 	mlx_texture_t	*textures[4];
 	t_sprite		*sprite;
 	uint32_t		floor;
@@ -154,11 +154,11 @@ typedef struct s_cub3d
 
 typedef struct s_color
 {
-	uint8_t	r;
-	uint8_t	g;
-	uint8_t	b;
-	uint8_t	a;
-}				t_color;
+	uint8_t			r;
+	uint8_t			g;
+	uint8_t			b;
+	uint8_t			a;
+}					t_color;
 
 // draw_minimap.c
 // void draw_map(void *ptr);
@@ -185,16 +185,9 @@ void				handle_mouse(void *ptr);
 void				rotation(t_cub3d *cub3d);
 
 /**
-
-	* @brief Updates the position of the player on the map depending on the current direction (angle in radians).
- *
-
-	* @details This function updates the player's position on the map based on the current direction of the player.
- *
- *
- * @param cub3d The pointer to the t_cub3d struct representing the game state.
- * @param angle The angle to update the player's position by.
- */
+ * This function updates the 
+ * player's position on the map based on the current direction of the player.
+*/
 void				update_position(t_cub3d *cub3d, double angle);
 
 /**
@@ -282,6 +275,7 @@ double				deg_to_rad(double angle);
 int					is_zero(double value);
 int					get_rgba(int r, int g, int b, int a);
 uint32_t			get_pixel_color(mlx_texture_t *texture, int x, int y);
+int					is_newline(char c);
 
 void				render_sprite(t_cub3d *cub3d);
 #endif

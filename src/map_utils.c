@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:30:05 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 17:25:22 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/29 19:57:38 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ void	copy_map(t_file *game_data, t_minimap *minimap)
 	j = 0;
 	minimap->map = malloc(sizeof(int *) * game_data->map_h_tiles);
 	if (!minimap->map)
-		return ; // add proper error message
+		return ;
 	while (game_data->map[i])
 	{
 		minimap->map[i] = malloc(sizeof(int) * game_data->map_w_tiles);
 		if (!minimap->map[i])
-			return ; // add proper error message
+			return ;
 		while (game_data->map[i][j])
 		{
 			if (game_data->map[i][j] == '1')
