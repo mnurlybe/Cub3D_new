@@ -13,11 +13,11 @@ void draw_minimap_vis(t_cub3d *cub3d)
     double sq_end_y;
     double x;
     double y;
-
-    sq_start_x = cub3d->P->pos.x - 64;
-    sq_start_y = cub3d->P->pos.y - 64;
-    sq_end_x = cub3d->P->pos.x + 64;
-    sq_end_y = cub3d->P->pos.y + 64;
+    printf("{POS X: %f, POS Y: %f\n}", cub3d->P->pos.x, cub3d->P->pos.y);
+    sq_start_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) - 64;
+    sq_start_y = cub3d->P->pos.y * (MINIMAP_SCALE / TILE_SIZE) - 64;
+    sq_end_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) + 64;
+    sq_end_y = cub3d->P->pos.y * (MINIMAP_SCALE / TILE_SIZE) + 64;
     x = 0;
     y = 0;
 
@@ -29,7 +29,7 @@ void draw_minimap_vis(t_cub3d *cub3d)
                 mlx_put_pixel(cub3d->buf, x, y, BLACK);
             else
             {
-                if (cub3d->minimap->map[(int)sq_start_y / TILE_SIZE][(int)sq_start_x / TILE_SIZE] > 0)
+                if (cub3d->minimap->map[(int)sq_start_y / MINIMAP_SCALE][(int)sq_start_x / MINIMAP_SCALE] > 0)
                     mlx_put_pixel(cub3d->buf, x, y, GREEN);
                 else
                     mlx_put_pixel(cub3d->buf, x, y, WHITE);
@@ -37,7 +37,7 @@ void draw_minimap_vis(t_cub3d *cub3d)
             x++;
             sq_start_x++;
         }
-        sq_start_x = cub3d->P->pos.x - 64;
+        sq_start_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) - 64;
         x = 0;
         sq_start_y++;
         y++;
