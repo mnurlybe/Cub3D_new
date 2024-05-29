@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 19:17:16 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/29 20:37:37 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 // Map settings
 # define PLAYER_SIZE 6
 # define MINIMAP_SCALE 16
-# define TILE_SIZE 2
+# define TILE_SIZE 1
 
 // Sprite settings
 # define SPRITE_SPEED 0.5

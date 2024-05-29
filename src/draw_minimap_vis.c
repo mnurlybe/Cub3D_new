@@ -2,89 +2,87 @@
 
 /**
  * the minimap will display only a fixed square size 128*128 pixels.
- * It will show only certain part of the map, where the player is seen in the center of the square.
+ * It will show only certain part of the map, where the player is seen 
+ * in the center of the square.
 */
 
-void draw_minimap_vis(t_cub3d *cub3d)
+void	render_minimap(t_cub3d *cub3d, t_vec start, t_vec p)
 {
-    double sq_start_x;
-    double sq_start_y;
-    double sq_end_x;
-    double sq_end_y;
-    double x;
-    double y;
-    
-    sq_start_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) - 64;
-    sq_start_y = cub3d->P->pos.y * (MINIMAP_SCALE / TILE_SIZE) - 64;
-    sq_end_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) + 64;
-    sq_end_y = cub3d->P->pos.y * (MINIMAP_SCALE / TILE_SIZE) + 64;
-    x = 0;
-    y = 0;
+	if (start.x < 0 || start.y < 0 || start.x >= cub3d->minimap->w_pixels
+								   || start.y >= cub3d->minimap->h_pixels)
+		mlx_put_pixel(cub3d->buf, p.x, p.y, BLACK);
+	else
+	{
+		if (cub3d->minimap->map[(int)start.y / MINIMAP_SCALE]
+							   [(int)start.x / MINIMAP_SCALE] > 0)
+			mlx_put_pixel(cub3d->buf, p.x, p.y, GREEN);
+		else
+			mlx_put_pixel(cub3d->buf, p.x, p.y, WHITE);
+	}
+}
 
-    while (sq_start_y < sq_end_y)
+void	draw_minimap_vis(t_cub3d *cub3d)
+{
+	t_vec	start;
+	t_vec	end;
+	t_vec	pixpos;
+	double	mt;
+
+	mt = (MINIMAP_SCALE / TILE_SIZE);
+	start = vec_sub(vec_scal_m(cub3d->P->pos, mt), (t_vec) {.x = 64, .y = 64});
+	end = vec_add(vec_scal_m(cub3d->P->pos, mt), (t_vec) {.x = 64, .y = 64});
+	pixpos = (t_vec) {.x = 0, .y = 0};
+    while (start.y < end.y)
     {
-        while (sq_start_x < sq_end_x)
+        while (start.x < end.x)
         {
-            if (sq_start_x < 0 || sq_start_y < 0 || sq_start_x >= cub3d->minimap->w_pixels || sq_start_y >= cub3d->minimap->h_pixels)
-                mlx_put_pixel(cub3d->buf, x, y, BLACK);
-            else
-            {
-                if (cub3d->minimap->map[(int)sq_start_y / MINIMAP_SCALE][(int)sq_start_x / MINIMAP_SCALE] > 0)
-                    mlx_put_pixel(cub3d->buf, x, y, GREEN);
-                else
-                    mlx_put_pixel(cub3d->buf, x, y, WHITE);
-            }
-            x++;
-            sq_start_x++;
+			render_minimap(cub3d, start, pixpos);
+            pixpos.x++;
+            start.x++;
         }
-        sq_start_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) - 64;
-        x = 0;
-        sq_start_y++;
-        y++;
+        start.x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) - 64;
+        pixpos.x = 0;
+        start.y++;
+        pixpos.y++;
     }
-
 }
 
 void draw_player_vis(t_cub3d *cub3d)
 {
-    int delta_x;
-    int delta_y;
-    int x;
-    int y;
+	t_vec_int	delta;
+	t_vec_int	p;
+	double		half_ps;
 
-    delta_x = - PLAYER_SIZE / 2;
-    delta_y = - PLAYER_SIZE / 2;
-    while (delta_x <= PLAYER_SIZE / 2)
+	half_ps = PLAYER_SIZE / 2;
+	delta = (t_vec_int) {.x = - half_ps, .y = - half_ps};
+    while (delta.x <= half_ps)
     {
-        x = delta_x + 64;
-        while (delta_y <= PLAYER_SIZE / 2)
+        p.x = delta.x + 64;
+        while (delta.y <= half_ps)
         {
-            if (delta_x * delta_x + delta_y * delta_y <= PLAYER_SIZE * PLAYER_SIZE / 4 + 1)
+            if (delta.x * delta.x + delta.y * delta.y <= half_ps * half_ps + 1)
             {
-                y = delta_y + 64;
-                mlx_put_pixel(cub3d->buf, x, y, PLAYER_COLOR);
+                p.y = delta.y + 64;
+                mlx_put_pixel(cub3d->buf, p.x, p.y, PLAYER_COLOR);
             }
-            delta_y++;
+            delta.y++;
         }
-        delta_y = - PLAYER_SIZE / 2;
-        delta_x++;
+        delta.y = - half_ps;
+        delta.x++;
     }
 }
 
 // draw a thicker line starting in the middle of the player square
-void draw_line_vis(mlx_image_t *img, double x1, double y1, double x2, double y2, int color)
+void draw_line_vis(mlx_image_t *img, t_vec p1, t_vec p2, int color)
 {
-    double dx = x2 - x1;
-    double dy = y2 - y1;
-    double steps = sqrt(dx * dx + dy * dy);
-    double xinc = dx / steps;
-    double yinc = dy / steps;
-    double x = x1;
-    double y = y1;
-    size_t i = 0;
-    size_t j = 0;
-    size_t k = 0;
-    while(i < steps)
+	t_vec	inc;
+	size_t	i;
+	size_t	j;
+	size_t	k;
+
+	inc = vec_scal_d(vec_sub(p2, p1), vec_distance(p2, p1));
+    i = 0;
+    while(i < vec_distance(p2, p1))
     {
         j = 0;
         while(j < 3)
@@ -92,29 +90,24 @@ void draw_line_vis(mlx_image_t *img, double x1, double y1, double x2, double y2,
             k = 0;
             while(k < 3)
             {
-                mlx_put_pixel(img, x + j, y + k, color);
+                mlx_put_pixel(img, p1.x + j, p1.y + k, color);
                 k++;
             }
             j++;
         }
-        x += xinc;
-        y += yinc;
+        p1 = vec_add(p1, inc);
         i++;
     }
 }
 
 void draw_player_direction_vis(t_cub3d *cub3d)
 {
-    double x1;
-    double y1;
-    double x2;
-    double y2;
+    t_vec p1;
+    t_vec p2;
 
-    x1 = 64;
-    y1 = 64;
-    x2 = x1 + 8 * cos(cub3d->P->angle);
-    y2 = y1 + 8 * sin(cub3d->P->angle);
-    draw_line_vis(cub3d->buf, x1, y1, x2, y2, PLAYER_COLOR);
+    p1 = (t_vec) {.x = 64, .y = 64};
+    p2 = vec_add(p1, vec_scal_m(cub3d->P->dir, 16));
+    draw_line_vis(cub3d->buf, p1, p2, PLAYER_COLOR);
 }
 
 void draw_map_vis(void *ptr)
