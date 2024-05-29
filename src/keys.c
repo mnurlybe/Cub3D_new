@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:40:03 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 16:44:44 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/29 19:25:06 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ void	handle_keys(void *ptr)
 	if (mlx_is_key_down(cub3d->mlx, MLX_KEY_ESCAPE))
 	{
 		mlx_close_window(cub3d->mlx);
-		mlx_terminate(cub3d->mlx);
-		free(cub3d);
-		exit(0);
 	}
 }
 

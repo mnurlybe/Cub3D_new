@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:50:37 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 17:46:28 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/29 19:25:19 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	close_program(t_cub3d *cub3d)
 {
 	mlx_delete_image(cub3d->mlx, cub3d->buf);
 	mlx_delete_image(cub3d->mlx, cub3d->img);
-	//mlx_close_window(cub3d->mlx);
 	mlx_terminate(cub3d->mlx);
 	free_program(cub3d);
 }

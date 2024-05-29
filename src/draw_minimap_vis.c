@@ -13,7 +13,7 @@ void draw_minimap_vis(t_cub3d *cub3d)
     double sq_end_y;
     double x;
     double y;
-    printf("{POS X: %f, POS Y: %f\n}", cub3d->P->pos.x, cub3d->P->pos.y);
+    
     sq_start_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) - 64;
     sq_start_y = cub3d->P->pos.y * (MINIMAP_SCALE / TILE_SIZE) - 64;
     sq_end_x = cub3d->P->pos.x * (MINIMAP_SCALE / TILE_SIZE) + 64;
