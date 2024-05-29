@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 14:56:22 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/29 16:01:06 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 // Map settings
 # define PLAYER_SIZE 6
 # define MINIMAP_SCALE 1.0
-# define TILE_SIZE 1
+# define TILE_SIZE 2
 
 // Sprite settings
 # define SPRITE_SPEED 0.5
