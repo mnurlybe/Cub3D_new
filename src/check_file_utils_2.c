@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 16:48:26 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/27 19:29:45 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:41:30 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,6 @@ int	parse_floor_ceiling(t_file *info)
 				ft_strlen(info->split_file[i])) != NULL)
 			ceiling = ft_split(info->split_file[i], ' ');
 		i++;
-		if (!parse_textures(info))
-		{
-			printf("textures: error\n");  // add proper error message
-			return (0);
-		}
 	}
 	if (!parse_floor_ceiling_two(floor, ceiling, info))
 		return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:50:37 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/28 19:10:36 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/05/29 16:41:15 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	loop_program(t_cub3d *cub3d)
 
 void	close_program(t_cub3d *cub3d)
 {
+	mlx_delete_image(cub3d->mlx, cub3d->buf);
 	mlx_delete_image(cub3d->mlx, cub3d->img);
 	mlx_close_window(cub3d->mlx);
 	mlx_terminate(cub3d->mlx);
@@ -71,12 +72,14 @@ int	main(int argc, char **argv)
 	{
 		game = parse_file(argv[1]);
 		if (!game)
-			write(1, "Error in file\n", 15); // add proper error message
+			write(2, "Error in file\n", 15); // add proper error message
 		else
+		{
 			ft_cub3d(game);
+		}
 	}
 	else                        // add proper error message
-		write(1, "Error\n", 6); // add proper error message
+		write(2, "Error\n", 6); // add proper error message
 	free_game(game);
 	return (0);
 }

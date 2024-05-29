@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:31 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/28 18:58:32 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:06:00 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,33 @@ void	free_textures(t_file *game)
 		free_array(game->we);
 	if (game->ea != NULL)
 		free_array(game->ea);
-	if (game->textures[NORTH] != NULL)
+	if (game->textures[NORTH])
+	{
+		printf("free north\n");
 		mlx_delete_texture(game->textures[NORTH]);
+	}
 	if (game->textures[SOUTH] != NULL)
+	{
+		printf("free south\n");
 		mlx_delete_texture(game->textures[SOUTH]);
+	}
 	if (game->textures[EAST] != NULL)
+	{
+		printf("free east\n");
 		mlx_delete_texture(game->textures[EAST]);
+	}
 	if (game->textures[WEST] != NULL)
+	{
+		printf("free west\n");
 		mlx_delete_texture(game->textures[WEST]);
+	}
 }
 
 void	free_game(t_file *game)
 {
 	if (!game)
 		return ;
+	printf("FREE GAME\n");
 	free_textures(game);
 	if (game->split_file != NULL)
 		free_array(game->split_file);
