@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julienmoigno <julienmoigno@student.42.f    +#+  +:+       +#+        */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 20:05:40 by vzhadan           #+#    #+#             */
-/*   Updated: 2024/05/17 18:30:18 by julienmoign      ###   ########.fr       */
+/*   Created: 2023/01/17 20:05:40 by mnurlybe          #+#    #+#             */
+/*   Updated: 2024/06/01 17:15:37 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
