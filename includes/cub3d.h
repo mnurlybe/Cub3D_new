@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:08:59 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 20:50:35 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/06/03 18:10:04 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,10 +257,10 @@ t_vec_int			stepping_direction(t_vec dir);
 
 // raycasting.c
 void				cast_ray(t_cub3d *cub3d, t_ray *ray);
-void				dda(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist,
-						t_vec_int map, t_vec *distance);
+void				dda(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist, 
+						t_vec *distance);
 t_vec				calculate_initial_offset(t_cub3d *cub3d, t_ray *ray,
-						t_vec delta_dist, t_vec_int map);
+						t_vec delta_dist);
 
 // render_vertical.c
 t_vertical			calculate_vertical_strip(t_cub3d *cub3d, t_ray *ray);

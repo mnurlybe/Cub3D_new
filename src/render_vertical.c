@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:38:49 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/29 20:44:39 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/06/03 18:11:40 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ t_vertical	calculate_vertical_strip(t_cub3d *cub3d, t_ray *ray)
 	t_vertical	vert;
 
 	vert.delta_height = (int)(cub3d->height / (ray->distance));
-/* 	if (is_zero(fmod(cub3d->P->angle,M_PI_2)) && ray->distance > 3)
-		printf("d: %f\n", ray->distance); */
 	vert.start = (int)(cub3d->height - vert.delta_height) / 2;
 	vert.end = (int)(vert.start + vert.delta_height);
 	return (vert);

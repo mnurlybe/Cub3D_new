@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:01:41 by lwoiton           #+#    #+#             */
-/*   Updated: 2024/05/29 20:40:29 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/06/03 18:09:24 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_vec	calculate_initial_offset(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist,
-		t_vec_int map)
+t_vec	calculate_initial_offset(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist)
 {
-	t_vec	p;
-	t_vec	offset;
+	t_vec		p;
+	t_vec_int	map;
+	t_vec		offset;
 
 	p = cub3d->p->pos;
+	map = vec_int_scal_d(p, TILE_SIZE);
 	if (ray->dir.x < 0)
 		offset.x = (p.x - map.x * TILE_SIZE) * delta_dist.x;
 	else
@@ -27,15 +28,20 @@ t_vec	calculate_initial_offset(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist,
 		offset.y = (p.y - map.y * TILE_SIZE) * delta_dist.y;
 	else
 		offset.y = ((map.y + 1) * TILE_SIZE - p.y) * delta_dist.y;
+	if (is_zero(offset.x))
+		offset.x += delta_dist.x / 1000;
+	if (is_zero(offset.y))
+		offset.y += delta_dist.y / 1000;
 	return (offset);
 }
 
-void	dda(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist, t_vec_int map,
-		t_vec *distance)
+void	dda(t_cub3d *cub3d, t_ray *ray, t_vec delta_dist, t_vec *distance)
 {
 	t_vec_int	step;
+	t_vec_int	map;
 
 	step = stepping_direction(ray->dir);
+	map = vec_int_scal_d(cub3d->p->pos, TILE_SIZE);
 	while (true)
 	{
 		if (vertical_gridline_hit(distance))
@@ -59,12 +65,10 @@ void	cast_ray(t_cub3d *cub3d, t_ray *ray)
 {
 	t_vec		delta_dist;
 	t_vec		distance;
-	t_vec_int	map;
 
 	delta_dist = vec_apply(vec_inv(ray->dir), fabs);
-	map = vec_int_scal_d(cub3d->p->pos, TILE_SIZE);
-	distance = calculate_initial_offset(cub3d, ray, delta_dist, map);
-	dda(cub3d, ray, delta_dist, map, &distance);
+	distance = calculate_initial_offset(cub3d, ray, delta_dist);
+	dda(cub3d, ray, delta_dist, &distance);
 	if (vertical_gridline_hit(&distance))
 		ray->distance = distance.x;
 	else
