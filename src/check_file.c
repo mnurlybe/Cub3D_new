@@ -125,5 +125,10 @@ int	check_file(t_file *info)
 		ft_putstr_fd("Error: Map is not valid.\n", 2);
 		return (0);
 	}
+	if (!check_position(info))
+	{
+		ft_putstr_fd("Error: No player coordinates found.\n", 2);
+		return (0);
+	}
 	return (1);
 }

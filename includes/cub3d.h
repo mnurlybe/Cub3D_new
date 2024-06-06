@@ -232,6 +232,9 @@ int					parse_floor_ceiling(t_file *info);
 int					validate_borders(char *line, size_t end_index,
 						size_t start_index);
 
+// check_file_utils_3.c
+int	check_position(t_file *info);
+
 // map_utils.cimg
 int					get_map(t_file *game);
 void				copy_map(t_file *game_data, t_minimap *minimap);
