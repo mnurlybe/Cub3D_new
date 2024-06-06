@@ -233,11 +233,12 @@ int					validate_borders(char *line, size_t end_index,
 						size_t start_index);
 
 // check_file_utils_3.c
-int	check_position(t_file *info);
+int					check_position(t_file *info);
 
 // map_utils.cimg
 int					get_map(t_file *game);
 void				copy_map(t_file *game_data, t_minimap *minimap);
+int					check_map(t_file *info);
 
 // map_utils2.c
 int					get_map_indexes(t_file *info);
