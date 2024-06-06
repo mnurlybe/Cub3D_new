@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:50:37 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 19:51:05 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:49:49 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_cub3d(t_file *game_data)
 
 	cub3d = malloc(sizeof(t_cub3d));
 	init(cub3d, game_data);
-	cub3d->mlx = mlx_init(cub3d->width, cub3d->height, "Cub3D", true);
+	cub3d->mlx = mlx_init(cub3d->width, cub3d->height, "Cub3D", false);
 	if (!cub3d->mlx)
 	{
 		free(cub3d);
