@@ -6,17 +6,16 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 21:09:19 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/06/01 17:15:37 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:45:54 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../../includes/libft.h"
 
 /*
  *	Makes integer from string, skiping all the whitespaces
  *	if minus symbol is in the string, number will be negative
-*/
+ */
 int	ft_atoi(const char *nptr)
 {
 	int	num;

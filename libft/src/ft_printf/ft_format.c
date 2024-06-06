@@ -6,10 +6,9 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 17:13:47 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/06/01 17:13:49 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:45:43 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../../includes/ft_printf.h"
 
@@ -60,8 +59,8 @@ int	format_int(va_list args, t_specifiers sp, t_flags flags)
 
 int	format_hexadecimal(va_list args, t_specifiers sp, t_flags flags)
 {
-	int					num;
-	char				*str;
+	int		num;
+	char	*str;
 
 	num = va_arg(args, unsigned int);
 	if (sp.x)
