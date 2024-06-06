@@ -27,7 +27,7 @@ int	get_map_indexes(t_file *info)
 		}
 	}
 	i++;
-	while (i++ < info->file_size)
+	while (i < info->file_size)
 	{
 		if ((!is_only_whitespace(info->split_file[i])
 				&& is_only_ones(info->split_file[i])))
@@ -35,8 +35,10 @@ int	get_map_indexes(t_file *info)
 			info->map_end_index = i;
 			break ;
 		}
+		i++;
 	}
-	if (info->map_start_index == -1 || info->map_end_index == -1)
+	if (info->map_start_index == -1 || info->map_end_index == -1
+		|| (info->map_end_index - info->map_start_index) < 2)
 		return (0);
 	return (1);
 }
