@@ -6,7 +6,7 @@
 /*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:50:37 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/06/06 16:49:49 by lwoiton          ###   ########.fr       */
+/*   Updated: 2024/11/19 23:59:42 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_cub3d(t_file *game_data)
 
 	cub3d = malloc(sizeof(t_cub3d));
 	init(cub3d, game_data);
-	cub3d->mlx = mlx_init(cub3d->width, cub3d->height, "Cub3D", false);
+	cub3d->mlx = mlx_init(cub3d->width, cub3d->height, "cub3D", false);
 	if (!cub3d->mlx)
 	{
 		free(cub3d);
@@ -74,7 +74,11 @@ int	main(int argc, char **argv)
 			ft_cub3d(game);
 	}
 	else
+	{
 		ft_putstr_fd("Error: wrong arguments.\n", 2);
+		ft_putstr_fd("Usage: ./cub3D <map.cub>\n", 1);
+		ft_putstr_fd("Example: ./cub3D maps/simple_map1.cub\n", 1);
+	}
 	free_game(game);
 	return (0);
 }

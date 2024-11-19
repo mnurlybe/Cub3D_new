@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lwoiton <lwoiton@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:38:54 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/05/29 20:40:29 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/11/19 23:47:37 by lwoiton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,18 @@ t_vec	wallslide(t_cub3d *cub3d, double angle)
 void	update_position(t_cub3d *cub3d, double angle)
 {
 	t_vec	new_pos;
+	t_vec	new_posl;
+	t_vec	new_posr;
 
 	new_pos = vec_add(cub3d->p->pos, vec_scal_m(vec_rotate(cub3d->p->dir,
 					angle), PLAYER_SPEED));
-	if (!is_wall(cub3d->minimap->map, new_pos))
+	new_posl = vec_add(cub3d->p->pos, vec_scal_m(vec_rotate(cub3d->p->dir,
+				angle - M_PI_2), PLAYER_SPEED));
+	new_posr = vec_add(cub3d->p->pos, vec_scal_m(vec_rotate(cub3d->p->dir,
+				angle + M_PI_2), PLAYER_SPEED));
+	if (!is_wall(cub3d->minimap->map, new_pos) &&
+		!is_wall(cub3d->minimap->map, new_posl) &&
+		!is_wall(cub3d->minimap->map, new_posr))
 		cub3d->p->pos = new_pos;
 	else
 		cub3d->p->pos = wallslide(cub3d, angle);
