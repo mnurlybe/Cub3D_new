@@ -58,6 +58,18 @@ check_submodules:
 		git submodule init && git submodule update; \
 	fi
 
+doc:
+	@if ! command -v doxygen &> /dev/null; then \
+		echo "Error: doxygen not found. Please install doxygen:"; \
+		echo "  Ubuntu/Debian: sudo apt-get install doxygen graphviz"; \
+		echo "  macOS: brew install doxygen graphviz"; \
+		exit 1; \
+	fi
+	@echo "Generating documentation..."
+	@doxygen Doxyfile
+	@echo "Documentation generated in docs/doxygen/html"
+	@echo "Open docs/doxygen/html/index.html in your browser to view"
+
 all: check_submodules check_dependencies libft42 $(NAME)
 
 libft42:
@@ -92,4 +104,4 @@ fclean: clean
 re: fclean all
 
 
-.PHONY: all clean fclean re debug libft42 check_dependencies check_submodules
+.PHONY: all clean fclean re debug libft42 check_dependencies check_submodules doc
