@@ -184,6 +184,8 @@ Example map:
 
 ## Documentation Index
 - [Development Plan](DEVELOPMENT.md)
+- [DDA Algorithm](dda_algorithm.md)
+- [Vectors](vectors.md)
 
 ## Error Handling
 
